@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import Header from '../../components/Header/header';
-import Footer from '../../components/Footer/footer';
+import Header from '../components/Header/header';
+import Footer from '../components/Footer/footer';
 
 class Layout extends Component {
 
@@ -18,20 +18,16 @@ class Layout extends Component {
 	render () {
 		return (
 			<div>
-				{/*Call header and pass in props argument*/}
 				<Header
 					showNav={this.state.showNav}
 					onHideNav={() => this.toggleSidenav(false)}
 					onOpenNav={() => this.toggleSidenav(true)}
 				/>
-
-				{this.props.children}	{/*body children like Handlebars*/}
-
+				{this.props.children}	
 				<Footer/>
 			</div>
 		)
 	}
-
 }
 
 export default Layout;
