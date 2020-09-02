@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './hoc/Layout/layout.css';
+import './Layout/layout.css';
 
 import {BrowserRouter} from 'react-router-dom';
 import Routes from './routes';	
