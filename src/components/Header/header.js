@@ -3,8 +3,6 @@ import FontAwesome from 'react-fontawesome';
 
 import './header.module.css';
 
-import signal from '../../images/icons/wifi.svg';
-
 class Header extends Component {
 
     render () {
@@ -34,8 +32,6 @@ class Header extends Component {
                     <FontAwesome name="bars"/>
                 </button>
 
-                <h1>Weight Over</h1>
-                
             </header>
         )
     }
