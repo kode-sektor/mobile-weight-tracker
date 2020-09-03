@@ -3,16 +3,18 @@ import React, {Component} from 'react';
 import Header from '../components/Header/header';
 import Footer from '../components/Footer/footer';
 
+import './layout.css';
+
 class Layout extends Component {
 
 	state = {
-		showNav: false,
-	};
+		showNav: false
+	}
 
 	toggleSidenav = (action) => {
 		this.setState({
-			showNav : action
-		});
+            showNav : action
+        })
 	}
 
 	render () {
@@ -23,7 +25,7 @@ class Layout extends Component {
 					onHideNav={() => this.toggleSidenav(false)}
 					onOpenNav={() => this.toggleSidenav(true)}
 				/>
-				{this.props.children}	
+				{this.props.children}
 				<Footer/>
 			</div>
 		)

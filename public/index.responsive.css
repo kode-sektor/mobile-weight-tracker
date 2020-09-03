@@ -1,4 +1,8 @@
 @media (min-width: 480px) {
+    .layout {
+        background: url('images/iphone.png') no-repeat center;
+        border: 2px solid orange;
+    }
 }
 
 @media (min-width: 768px) {
