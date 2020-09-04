@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 
-import './header.module.css';
+import styles from './header.module.css';
+
 
 class Header extends Component {
 
@@ -31,6 +32,8 @@ class Header extends Component {
                 <button className="nav-control">
                     <FontAwesome name="bars"/>
                 </button>
+
+                <h1 className={styles.app_title}>{this.props.title}</h1>
 
             </header>
         )
