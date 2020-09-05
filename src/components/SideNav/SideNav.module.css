@@ -1,0 +1,34 @@
+.menu_links_container {
+    height: 90%;
+}
+.menu_links {
+    height: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 2px solid var(--app-green);
+}
+.menu_links > li {
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+}
+.menu_links > li a {
+    color: var(--app-green);
+    opacity: .8;
+}
+.menu_links > li a:hover, 
+.menu_links > li a:focus {
+    color: #fff;
+}
+.premium {
+    border-top: 1px solid var(--grey);
+}
+.premium a {
+    text-transform: uppercase;
+    color: gold !important;
+    font-size: 1.1em;
+    transition: transform .3s ease;
+}
+.premium a:hover,
+.premium a:focus {
+    transform: scale(1.7) !important;
+}

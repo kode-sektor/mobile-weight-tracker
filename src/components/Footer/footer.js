@@ -5,8 +5,6 @@ import clock from '../../images/icons/clock.svg';
 import gear from '../../images/icons/gear.svg';
 import plusCircle from '../../images/icons/plus-circle.png';
 
-import './footer.module.css';
-
 const Footer = () => (
 
     <footer className="app-footer">
