@@ -5,7 +5,7 @@
     height: 100%;
     padding-left: 15px;
     padding-right: 15px;
-    border: 2px solid var(--app-green);
+    border: 1px solid var(--app-green);
 }
 .menu_links > li {
     padding-top: 7.5px;
@@ -23,12 +23,14 @@
     border-top: 1px solid var(--grey);
 }
 .premium a {
+    display: inline-block;
     text-transform: uppercase;
     color: gold !important;
     font-size: 1.1em;
+    transform-origin: center;
     transition: transform .3s ease;
 }
 .premium a:hover,
 .premium a:focus {
-    transform: scale(1.7) !important;
+    transform: scale(1.1) !important;
 }

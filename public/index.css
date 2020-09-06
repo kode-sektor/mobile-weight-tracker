@@ -32,7 +32,6 @@
 	padding: 0;
 	box-sizing: border-box;
 }
-
 :root {
     /*primary colours*/
     --blue: #009CE1;
@@ -43,12 +42,11 @@
     --link: #007BFF;
     --link-hover: #D9534F;
   
-  
     /*shades of grey*/
     --grey: #696969;
     --light-grey: #efefef;
     --app-grey: #e4e4e4;
-    --mid-grey: #f2f2f2;
+    --mid-grey: #d9d9d9;
     --black: #000;
     --white: #fff;
   
@@ -167,6 +165,9 @@ a:focus {
     text-decoration: none;
     outline: none;
 }
+li a {
+    display: block;
+}
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: pink;
   font-size: .8em;
@@ -194,14 +195,12 @@ a:focus {
 a {
 	transition: .2s;
 }
-
 img {
 	max-width: 100%;
 	height: auto;
 }
 
 /*Indicate email link*/
-
 a[href='mailto:'] {
 	background: url('img/email') no-repeat right top;
 }
@@ -222,7 +221,7 @@ address {
 /*4. FORMS
 ==============================================================================================================================================================*/
 
-/*indicate valid / invalid inputs on focus*/
+/*Indicate valid / invalid inputs on focus*/
 
 input:required, input[required] {
 	background-image: url();
@@ -271,13 +270,28 @@ a.tooltip:hover span, a.tooltip:focus span {
 }
 
 
+/*5. LISTS
+==============================================================================================================================================================*/
+
+
+/*6. MORE SPECIFIC (like form h2 {}, )
+==============================================================================================================================================================*/
+
+
+/*7. ICONS
+==============================================================================================================================================================*/
+
+.preferenceList .fa, .menu_links .fa {
+	color: gold;
+}
+
+
 /* APP */
 
 .layout {
     position: relative;
-    height: 100vh;
     width: 100vw;
-    max-height: 620.64px;
+    height: 620.64px;
     max-width: 320px;
     margin: 0 auto;
     padding: 18px 20px;
@@ -292,7 +306,7 @@ a.tooltip:hover span, a.tooltip:focus span {
     width: 100%;
 }
     /*Side Nav*/
-    .app-header > div > aside {
+    .app-header > div > aside, .preferenceList {
         position: absolute !important;
         left: 20px !important;
         top: 116px !important;
@@ -308,9 +322,30 @@ a.tooltip:hover span, a.tooltip:focus span {
         width: 100% !important;
         max-width: none !important;
         height: 100% !important;
-        padding-top: 10px;
+        padding-top: 20px;
         background: #000 !important;
     }
+    .preferenceList {
+        padding-top: 20px;
+        bottom: 150px !important;
+        border-radius: 0 !important;
+        background: var(--mid-grey) !important;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.4) 2px 0px 12px;
+        /transform: translateX(-102%);
+        z-index: 1;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .preferenceList > ul > li {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: thin solid rgb(239 239 239 / 30%);
+    }
+    .preferenceList > ul > li.profile {
+        border-bottom-color: rgb(239 239 239 / 90%);
+    }
+    
 
 .indicators {
     display: flex;

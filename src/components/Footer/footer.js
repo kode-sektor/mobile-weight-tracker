@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 
+
 import clock from '../../images/icons/clock.svg';
 import gear from '../../images/icons/gear.svg';
 import plusCircle from '../../images/icons/plus-circle.png';
 
-const Footer = () => (
+const Footer = (props) => (
 
     <footer className="app-footer">
 
-        <button className="preferences">
+        <button className="preferences"
+            onClick = {props.showPreferences}>
             <img src={gear} alt={gear}/>
         </button>
         <button className="add-entry">

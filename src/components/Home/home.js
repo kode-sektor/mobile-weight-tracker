@@ -8,13 +8,22 @@ import styles from './home.module.css';
 class Layout extends Component {
 
 	state = {
-		showNav: false
+		showNav : false,
+		showPreferences : false
 	}
 
 	toggleSidenav = (action) => {
 		this.setState({
             showNav : action
         })
+	}
+
+	togglePreferences = () => {
+		let action = this.state.showNav ? false : true;
+
+		this.setState({
+			showPreferences : action
+		})
 	}
 
 	render () {
@@ -62,7 +71,9 @@ class Layout extends Component {
 
 				</section>
 
-				<Footer/>
+				<Footer
+					showPreferences={()=> this.togglePreferences()}
+				/>
 
 			</div>
 		)

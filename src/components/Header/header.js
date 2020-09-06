@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import FontAwesome from 'react-fontawesome';
 
 import SideNav from '../SideNav/SideNav';
+import Preferences from '../Preferences/Preferences';
 
 import styles from './header.module.css';
-
 
 const Header = (props) => {
 
@@ -13,7 +13,9 @@ const Header = (props) => {
         <header className="app-header">
 
             <SideNav {...props}/>
-            
+
+            <Preferences/>
+
             <section className="indicators">
                 <span className="time">
                     3:42PM
