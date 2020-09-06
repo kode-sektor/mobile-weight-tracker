@@ -10,14 +10,15 @@ const Footer = (props) => (
 
     <footer className="app-footer">
 
-        <button className="preferences"
+        <button id="preferences" className="preferences"
             onClick = {props.showPreferences}>
             <img src={gear} alt={gear}/>
         </button>
         <button className="add-entry">
             <img src={plusCircle} alt={plusCircle}/>
         </button>
-        <button className="history">
+        <button id="history" className="history"
+            onClick = {props.showPreferences}>
             <img src={clock} alt={clock}/>
         </button>
         

@@ -3,6 +3,7 @@ import FontAwesome from 'react-fontawesome';
 
 import SideNav from '../SideNav/SideNav';
 import Preferences from '../Preferences/Preferences';
+import History from '../History/History';
 
 import styles from './header.module.css';
 
@@ -15,6 +16,8 @@ const Header = (props) => {
             <SideNav {...props}/>
 
             <Preferences {...props}/>
+
+            <History {...props}/>
 
             <section className="indicators">
                 <span className="time">

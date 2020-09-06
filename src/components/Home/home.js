@@ -3,32 +3,59 @@ import React, {Component} from 'react';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
 
+// Import Constants
+import {Capitalise} from '../function';
+
 import styles from './home.module.css';
 
 class Layout extends Component {
 
 	state = {
 		showNav : false,
-		showPreferences : "no_slide"
+		showPreferences : "no_slide",
+		showHistory : "no_slide"
 	}
 
 	toggleSidenav = (action) => {
 
 		// If user clicks on menu button, hide Preferences if its been opened
-		let preferences = (action === true) ? "no_slide" : this.state.showPreferences;
 		
 		this.setState({
 			showNav : action,
-			showPreferences : preferences
+			showPreferences : "no_slide",
+			showHistory : "no_slide"
         })
 	}
 
-	togglePreferences = () => {
-		let action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
+	togglePreferences = (evt) => {
+		
+		let element = (evt.currentTarget.id);	// preferences
+		let action = "";
 
-		this.setState({
-			showPreferences : action
-		})
+		// Handle toggle functionality of each widget. Only one must show 
+		// while others remain hidden from view
+		switch (element) {
+
+			case "preferences" : 
+				action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
+				this.setState({
+					showPreferences : action,
+					showHistory : "no_slide"
+				})
+			break;
+
+			case "history" : 
+				action = (this.state.showHistory === "no_slide") ? "slide" : "no_slide";
+				this.setState({
+					showHistory : action,
+					showPreferences : "no_slide"
+				})
+			break;
+
+			default : ;
+
+		}
+		
 	}
 
 	render () {
@@ -44,6 +71,7 @@ class Layout extends Component {
 						onOpenNav={() => this.toggleSidenav(true)}
 						title={"Weight Overview"}
 						preferences={this.state.showPreferences}
+						history={this.state.showHistory}
 					/>
 
 					<section className={styles.weight_track}>
@@ -81,7 +109,7 @@ class Layout extends Component {
 
 					<Footer
 						showNav={this.state.showNav}
-						showPreferences={()=> this.togglePreferences()}
+						showPreferences={(evt) => this.togglePreferences(evt)}
 					/>
 
 				</div>

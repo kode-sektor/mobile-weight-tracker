@@ -281,10 +281,12 @@ a.tooltip:hover span, a.tooltip:focus span {
 /*7. ICONS
 ==============================================================================================================================================================*/
 
-.preferenceList .fa, .menu_links .fa {
+.fa-star {
 	color: gold;
 }
-
+.fa-caret-up, .fa-trash-alt {
+    color: red;
+}
 
 /* APP */
 
@@ -313,7 +315,7 @@ a.tooltip:hover span, a.tooltip:focus span {
     height: 100%;
 }
     /*Side Nav*/
-    .app-header > div > aside, .preferenceList {
+    .app-header > div > aside {
         position: absolute !important;
         left: 0 !important;
         top: 116px !important;
@@ -332,31 +334,11 @@ a.tooltip:hover span, a.tooltip:focus span {
         padding-top: 20px;
         background: #000 !important;
     }
+    
     /*Preferences*/
-    .preferenceList {
-        padding-top: 20px;
-        bottom: 150px !important;
-        border-radius: 0 !important;
-        background: var(--mid-grey) !important;
-        box-shadow: rgba(0, 0, 0, 0.4) 2px 0px 12px;
-        transform: translateX(-102%);
-        z-index: 1;
-        padding-left: 15px;
-        padding-right: 15px;
-        transition : transform .2s ease-in-out;
-    }
-    .preferenceList.slide {
+    .app-header .slide, .app-header .history {
         transform : translateX(0);
     }
-    .preferenceList > ul > li {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-bottom: thin solid rgb(239 239 239 / 30%);
-    }
-    .preferenceList > ul > li.profile {
-        border-bottom-color: rgb(239 239 239 / 90%);
-    }
-    
 
 .indicators {
     display: flex;
