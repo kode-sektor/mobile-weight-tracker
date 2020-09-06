@@ -14,7 +14,7 @@ const Header = (props) => {
 
             <SideNav {...props}/>
 
-            <Preferences/>
+            <Preferences {...props}/>
 
             <section className="indicators">
                 <span className="time">

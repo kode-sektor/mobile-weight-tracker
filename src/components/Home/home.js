@@ -9,17 +9,22 @@ class Layout extends Component {
 
 	state = {
 		showNav : false,
-		showPreferences : false
+		showPreferences : "no_slide"
 	}
 
 	toggleSidenav = (action) => {
+
+		// If user clicks on menu button, hide Preferences if its been opened
+		let preferences = (action === true) ? "no_slide" : this.state.showPreferences;
+		
 		this.setState({
-            showNav : action
+			showNav : action,
+			showPreferences : preferences
         })
 	}
 
 	togglePreferences = () => {
-		let action = this.state.showNav ? false : true;
+		let action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
 
 		this.setState({
 			showPreferences : action
@@ -31,49 +36,55 @@ class Layout extends Component {
 		return (
 			<div className="layout">
 
-				<Header
-					showNav={this.state.showNav}
-					onHideNav={() => this.toggleSidenav(false)}
-					onOpenNav={() => this.toggleSidenav(true)}
-					title={"Weight Overview"}
-				/>
+				<div className="app-wrap">
 
-				<section className={styles.weight_track}>
+					<Header
+						showNav={this.state.showNav}
+						onHideNav={() => this.toggleSidenav(false)}
+						onOpenNav={() => this.toggleSidenav(true)}
+						title={"Weight Overview"}
+						preferences={this.state.showPreferences}
+					/>
 
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Target</h2>
-						<span className={styles.computed}>()</span>
-					</div>
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Change (Month)</h2>
-						<span className={styles.computed}>()</span>
-					</div>
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Current</h2>
-						<span className={styles.computed}>()</span>
-					</div>
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Target Change</h2>
-						<span className={styles.computed}>()</span>
-					</div>
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Change (Week)</h2>
-						<span className={styles.computed}>()</span>
-					</div>
-					<div className={styles.tab}>
-						<h2 className={styles.heading}>Total Change</h2>
-						<span className={styles.computed}>()</span>
-					</div>
+					<section className={styles.weight_track}>
 
-				</section>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Target</h2>
+							<span className={styles.computed}>()</span>
+						</div>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Change (Month)</h2>
+							<span className={styles.computed}>()</span>
+						</div>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Current</h2>
+							<span className={styles.computed}>()</span>
+						</div>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Target Change</h2>
+							<span className={styles.computed}>()</span>
+						</div>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Change (Week)</h2>
+							<span className={styles.computed}>()</span>
+						</div>
+						<div className={styles.tab}>
+							<h2 className={styles.heading}>Total Change</h2>
+							<span className={styles.computed}>()</span>
+						</div>
 
-				<section className="weight-graph">
+					</section>
 
-				</section>
+					<section className="weight-graph">
 
-				<Footer
-					showPreferences={()=> this.togglePreferences()}
-				/>
+					</section>
+
+					<Footer
+						showNav={this.state.showNav}
+						showPreferences={()=> this.togglePreferences()}
+					/>
+
+				</div>
 
 			</div>
 		)
