@@ -84,8 +84,8 @@ button {
 	background: none;
 	outline: none;
 	border: none;
-	font-family: ;
-	transition: all .2s
+	font-family: var(--font-secondary);
+    transition: all .2s;
 }
 button:hover, button:focus {
 	opacity: .7;
@@ -103,11 +103,24 @@ select, option {
     cursor: pointer;
 }
 input, select {
-    padding-left: .2in;
+    padding-left: .1in;
     font-family: inherit;
-    font-size: inherit;
-    color: inherit;
+    font-size: .8em;
+    color: var(--grey);
     box-sizing: border-box;
+    border: 0;
+    width: 100%;
+    height: 35px;
+    margin-bottom: 15px;
+}
+input:focus, select:focus {
+    outline: none;
+    border-radius: 0;
+}
+legend {
+    color: var(--app-green);
+    font-weight: bold;
+    margin-bottom: 30px;
 }
 h1,
 h2,
@@ -169,27 +182,27 @@ li a {
     display: block;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: pink;
+  color: #000;
   font-size: .8em;
-  opacity: .7;
+  opacity: .3;
   font-weight: lighter;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: pink;
+  color: #000;
   font-size: .8em;
-  opacity: .7;
+  opacity: .3;
   font-weight: lighter;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: pink;
+  color: #000;
   font-size: .8em;
-  opacity: .7;
+  opacity: .3;
   font-weight: lighter;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: pink;
+  color: #000;
   font-size: .8em;
-  opacity: .7;
+  opacity: .3;
   font-weight: lighter;
 }
 a {
@@ -288,6 +301,49 @@ a.tooltip:hover span, a.tooltip:focus span {
     color: red;
 }
 
+/*8. HELPER STYLES
+==============================================================================================================================================================*/
+
+.form-group {
+    position: relative;
+    display: flex;
+}
+.buttonset {
+    display: flex;
+    justify-content: space-between;
+}
+.buttonset > button {
+    flex: 0 0 40%;
+    border-radius: 2px;
+}
+.buttonset > button .text {
+    display: inline-block;
+    width: 68%;
+    text-transform: uppercase; 
+}
+button.main {
+    line-height: 3;
+}
+button .icon-part {
+    display: inline-block;
+    height: inherit;
+    width: 30%;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 1px solid rgb(228 228 228 / 40%);
+}
+button.enter .icon-part {
+    border-right: 1px solid rgb(255 255 255 / 40%);
+}
+button.return {
+    background: #fff;
+    color:var(--blue);
+}
+button.enter {
+    background: var(--blue);
+    color: #fff;
+}
+
 /* APP */
 
 .layout {
@@ -334,11 +390,43 @@ a.tooltip:hover span, a.tooltip:focus span {
         padding-top: 20px;
         background: #000 !important;
     }
-    
-    /*Preferences*/
-    .app-header .slide, .app-header .history {
-        transform : translateX(0);
-    }
+.module {
+    position: absolute !important;
+    left: 0 !important;
+    top: 116px !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+
+    padding-top: 20px;
+    bottom: 150px !important;
+    border-radius: 0 !important;
+    background: var(--mid-grey) !important;
+    box-shadow: rgba(0, 0, 0, 0.4) 2px 0px;
+    transform: translateX(-102%);
+    z-index: 1;
+    padding-left: 15px;
+    padding-right: 15px;
+    transition : transform .2s ease-in-out;
+}
+
+.module.out {
+    transform: translateX(102%);
+}
+.react-datepicker-wrapper {
+    width: 100%;
+}
+.react-datepicker-popper {
+    left: -25px !important;
+}
+
+/*Preferences*/
+.app-wrap .slide, .app-wrap .history {
+    transform : translateX(0);
+}
 
 .indicators {
     display: flex;
@@ -392,19 +480,19 @@ a.tooltip:hover span, a.tooltip:focus span {
     bottom: 5px;
     border: 2px solid rgba(169,169,169, .7);
 }
-.preferences, .add-entry, .history {
+.preferences-btn, .add-entry-btn, .history-btn {
     flex: 0 0 33.33%;
     position: relative;
     top: -10px;
 }
-.preferences > img, .add-entry > img, .history > img {
+.preferences-btn > img, .add-entry-btn > img, .history-btn > img {
     width: 30px;
     height: 30px;
 }
-.add-entry {
+.add-entry-btn {
     top: -50px;
 }
-.add-entry > img {
+.add-entry-btn > img {
     width: 50px;
     height: 50px;
 }

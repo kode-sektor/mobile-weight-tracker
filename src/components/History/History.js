@@ -11,7 +11,7 @@ const HistoryList = (props) => {
     
 	return (
 
-        <section className={`${styles.historyList} ${props.history}`}>
+        <section className={`${styles.historyList} ${props.history} module out`}>
 
             <ul>
                 <li className="">

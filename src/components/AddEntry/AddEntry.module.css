@@ -1,0 +1,12 @@
+.frmEntry {
+    padding-left: 15%;
+    padding-right: 15%;
+    background: var(--light-grey) !important;
+}
+.calendar_icon {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    color: #000;
+    opacity: .7;
+}

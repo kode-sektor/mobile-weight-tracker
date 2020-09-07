@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import FontAwesome from 'react-fontawesome';
-
 
 import clock from '../../images/icons/clock.svg';
 import gear from '../../images/icons/gear.svg';
@@ -10,15 +8,16 @@ const Footer = (props) => (
 
     <footer className="app-footer">
 
-        <button id="preferences" className="preferences"
-            onClick = {props.showPreferences}>
+        <button id="preferences" className="preferences-btn"
+            onClick = {props.showComponent}>
             <img src={gear} alt={gear}/>
         </button>
-        <button className="add-entry">
+        <button id="addEntry" className="add-entry-btn"
+            onClick = {props.showComponent}>
             <img src={plusCircle} alt={plusCircle}/>
         </button>
-        <button id="history" className="history"
-            onClick = {props.showPreferences}>
+        <button id="history" className="history-btn"
+            onClick = {props.showComponent}>
             <img src={clock} alt={clock}/>
         </button>
         

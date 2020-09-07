@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 
-import Header from '../Header/header';
-import Footer from '../Footer/footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 
-// Import Constants
+import Preferences from '../Preferences/Preferences';
+import History from '../History/History';
+import AddEntry from '../AddEntry/AddEntry';
+
+// Import Functions
 import {Capitalise} from '../function';
 
 import styles from './home.module.css';
@@ -13,7 +17,8 @@ class Layout extends Component {
 	state = {
 		showNav : false,
 		showPreferences : "no_slide",
-		showHistory : "no_slide"
+		showHistory : "no_slide",
+		showAddEntry : "no_slide"
 	}
 
 	toggleSidenav = (action) => {
@@ -27,7 +32,18 @@ class Layout extends Component {
         })
 	}
 
-	togglePreferences = (evt) => {
+	showComponent = (module) => {
+		let modules = {
+			showPreferences : "no_slide",
+			showHistory : "no_slide",
+			showAddEntry : "no_slide"
+		}
+		modules = {...modules, ...module};
+
+		this.setState(modules);
+	}
+
+	toggleComponent = (evt) => {
 		
 		let element = (evt.currentTarget.id);	// preferences
 		let action = "";
@@ -38,24 +54,22 @@ class Layout extends Component {
 
 			case "preferences" : 
 				action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
-				this.setState({
-					showPreferences : action,
-					showHistory : "no_slide"
-				})
+				this.showComponent({showPreferences : action});
 			break;
 
 			case "history" : 
 				action = (this.state.showHistory === "no_slide") ? "slide" : "no_slide";
-				this.setState({
-					showHistory : action,
-					showPreferences : "no_slide"
-				})
+				this.showComponent({showHistory : action});
+			break;
+
+			case "addEntry" : 
+				action = (this.state.showAddEntry === "no_slide") ? "slide" : "no_slide";
+				this.showComponent({showAddEntry : action});
 			break;
 
 			default : ;
 
 		}
-		
 	}
 
 	render () {
@@ -70,9 +84,13 @@ class Layout extends Component {
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
 						title={"Weight Overview"}
-						preferences={this.state.showPreferences}
-						history={this.state.showHistory}
 					/>
+
+					<Preferences preferences={this.state.showPreferences}/>
+
+					<History history={this.state.showHistory}/>
+
+					<AddEntry addEntry={this.state.showAddEntry}/>
 
 					<section className={styles.weight_track}>
 
@@ -103,13 +121,11 @@ class Layout extends Component {
 
 					</section>
 
-					<section className="weight-graph">
-
-					</section>
+					<WeightGraph />
 
 					<Footer
 						showNav={this.state.showNav}
-						showPreferences={(evt) => this.togglePreferences(evt)}
+						showComponent={(evt) => this.toggleComponent(evt)}
 					/>
 
 				</div>

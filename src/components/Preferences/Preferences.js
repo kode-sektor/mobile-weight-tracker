@@ -11,7 +11,7 @@ const PreferenceList = (props) => {
     
 	return (
 
-        <section className={`${styles.preferenceList} ${props.preferences}`}>
+        <section className={`${styles.preferenceList} ${props.preferences} module`}>
 
             <ul>
                 <li className="profile">
