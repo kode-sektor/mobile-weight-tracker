@@ -3,9 +3,13 @@ import React, {Component} from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
+import Particle from '../Particles/Particles';
+
 import Preferences from '../Preferences/Preferences';
 import History from '../History/History';
 import AddEntry from '../AddEntry/AddEntry';
+import WeightTrack from '../WeightTrack/WeightTrack';
+import WeightGraph from '../WeightGraph/WeightGraph';
 
 // Import Functions
 import {Capitalise} from '../function';
@@ -21,15 +25,11 @@ class Layout extends Component {
 		showAddEntry : "no_slide"
 	}
 
-	toggleSidenav = (action) => {
-
-		// If user clicks on menu button, hide Preferences if its been opened
-		
+	toggleSidenav = (action) => {		
 		this.setState({
-			showNav : action,
-			showPreferences : "no_slide",
-			showHistory : "no_slide"
-        })
+			showNav : action
+		})
+		this.showComponent();	// hide all other modules
 	}
 
 	showComponent = (module) => {
@@ -38,8 +38,10 @@ class Layout extends Component {
 			showHistory : "no_slide",
 			showAddEntry : "no_slide"
 		}
-		modules = {...modules, ...module};
-
+		if (module) {
+			modules = {...modules, ...module};
+		}
+		
 		this.setState(modules);
 	}
 
@@ -75,6 +77,11 @@ class Layout extends Component {
 	render () {
 
 		return (
+
+			<>
+			
+			<Particle/>
+
 			<div className="layout">
 
 				<div className="app-wrap">
@@ -92,34 +99,7 @@ class Layout extends Component {
 
 					<AddEntry addEntry={this.state.showAddEntry}/>
 
-					<section className={styles.weight_track}>
-
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Target</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Change (Month)</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Current</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Target Change</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Change (Week)</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-						<div className={styles.tab}>
-							<h2 className={styles.heading}>Total Change</h2>
-							<span className={styles.computed}>()</span>
-						</div>
-
-					</section>
+					<WeightTrack />
 
 					<WeightGraph />
 
@@ -131,6 +111,8 @@ class Layout extends Component {
 				</div>
 
 			</div>
+
+			</>
 		)
 	}
 }

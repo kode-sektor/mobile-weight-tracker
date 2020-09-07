@@ -7,7 +7,7 @@ const WeightGraph = (props) => {
 
     return (
 
-        <section className="no_data">No Data</section>
+        <section className={styles.no_data}>No Data</section>
     )
 
 }

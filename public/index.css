@@ -345,7 +345,9 @@ button.enter {
 }
 
 /* APP */
-
+.root {
+    background: blue;
+}
 .layout {
     position: relative;
     width: 100vw;
@@ -354,6 +356,8 @@ button.enter {
     overflow: hidden;
     margin: 0 auto;
     padding: 18px 20px;
+    border-radius: 51px;
+    background: #fff;
 }
 
 /* Header */
