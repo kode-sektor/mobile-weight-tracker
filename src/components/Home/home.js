@@ -18,11 +18,30 @@ import styles from './home.module.css';
 
 class Layout extends Component {
 
+	constructor(props) {
+		super(props);
+		this.escFunction = this.escFunction.bind(this);
+	}
+
 	state = {
 		showNav : false,
 		showPreferences : "no_slide",
 		showHistory : "no_slide",
 		showAddEntry : "no_slide"
+	}
+
+	escFunction(event) {
+		if(event.keyCode === 27) {
+		    this.showComponent();	// Escape to close all open components
+		}
+	}
+
+	componentDidMount() {
+		document.addEventListener("keydown", this.escFunction, false);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener("keydown", this.escFunction, false);
 	}
 
 	toggleSidenav = (action) => {		
@@ -33,13 +52,15 @@ class Layout extends Component {
 	}
 
 	showComponent = (module) => {
+
+		// Close all slides
 		let modules = {
 			showPreferences : "no_slide",
 			showHistory : "no_slide",
 			showAddEntry : "no_slide"
 		}
 		if (module) {
-			modules = {...modules, ...module};
+			modules = {...modules, ...module};	// Toggle "slide"/"no_slide"
 		}
 		
 		this.setState(modules);
@@ -47,7 +68,13 @@ class Layout extends Component {
 
 	toggleComponent = (evt) => {
 		
-		let element = (evt.currentTarget.id);	// preferences
+		let element = (evt.currentTarget.id);	// preferences, history
+
+		// Check for class names of return. Class (and not ID) of "return" is used because
+		// there could be multiple return buttons in the application. Class "return" would 
+		// override the ID because it is dedicated to close all panels
+		element = ((evt.currentTarget.className).indexOf("return") !== -1) ? "return" : element;	
+
 		let action = "";
 
 		// Handle toggle functionality of each widget. Only one must show 
@@ -68,6 +95,9 @@ class Layout extends Component {
 				action = (this.state.showAddEntry === "no_slide") ? "slide" : "no_slide";
 				this.showComponent({showAddEntry : action});
 			break;
+
+			case "return" : 
+				this.showComponent();
 
 			default : ;
 
@@ -97,14 +127,14 @@ class Layout extends Component {
 
 					<History history={this.state.showHistory}/>
 
-					<AddEntry addEntry={this.state.showAddEntry}/>
+					<AddEntry addEntry={this.state.showAddEntry}
+						showComponent={(evt) => this.toggleComponent(evt)}/>
 
 					<WeightTrack />
 
 					<WeightGraph />
 
 					<Footer
-						showNav={this.state.showNav}
 						showComponent={(evt) => this.toggleComponent(evt)}
 					/>
 

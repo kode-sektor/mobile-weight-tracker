@@ -3,10 +3,10 @@
     padding-right: 15%;
     background: var(--light-grey) !important;
 }
-.calendar_icon {
+.calendar_icon, .unit {
     position: absolute;
-    right: 5px;
-    top: 10px;
+    right: 20px;
+    top: 7px;
     color: #000;
     opacity: .7;
 }
