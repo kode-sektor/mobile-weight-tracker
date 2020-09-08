@@ -303,7 +303,9 @@ a.tooltip:hover span, a.tooltip:focus span {
 
 /*8. HELPER STYLES
 ==============================================================================================================================================================*/
-
+.hidden {
+    display: none !important;
+}
 .form-group {
     position: relative;
     display: flex;

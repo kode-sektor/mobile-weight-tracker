@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -11,8 +12,9 @@ import AddEntry from '../AddEntry/AddEntry';
 import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
 
-// Import Functions
+// Import Functions and Config Vars
 import {Capitalise} from '../function';
+import {URL} from '../../config';
 
 import styles from './home.module.css';
 
@@ -27,12 +29,24 @@ class Layout extends Component {
 		showNav : false,
 		showPreferences : "no_slide",
 		showHistory : "no_slide",
-		showAddEntry : "no_slide"
+		showAddEntry : "no_slide", 
+
+		target : "",
+		entries : []
 	}
 
-	escFunction(event) {
-		if(event.keyCode === 27) {
-		    this.showComponent();	// Escape to close all open components
+	componentWillMount() {
+		// Fetch from db
+		if (this.state.entries.length < 1) {	
+			axios.all([
+				axios.get(`${URL}/target`),	// Fetch from team db
+				axios.get(`${URL}/entries`)	
+			]).then(axios.spread((res1, res2) => {
+				console.log(res1.data, res2.data);
+				this.setState({
+					// teams : response.data
+				})
+			}))
 		}
 	}
 
@@ -42,6 +56,12 @@ class Layout extends Component {
 
 	componentWillUnmount() {
 		document.removeEventListener("keydown", this.escFunction, false);
+	}
+
+	escFunction(event) {
+		if(event.keyCode === 27) {
+		    this.showComponent();	// Escape to close all open components
+		}
 	}
 
 	toggleSidenav = (action) => {		
@@ -128,6 +148,7 @@ class Layout extends Component {
 					<History history={this.state.showHistory}/>
 
 					<AddEntry addEntry={this.state.showAddEntry}
+						entries={(this.state.entries).length}
 						showComponent={(evt) => this.toggleComponent(evt)}/>
 
 					<WeightTrack />
