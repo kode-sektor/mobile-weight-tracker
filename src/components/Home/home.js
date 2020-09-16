@@ -68,17 +68,18 @@ class Layout extends Component {
 		this.setState({
 			showNav : action
 		})
-		this.showComponent();	// hide all other modules
 	}
 
 	showComponent = (module) => {
 
 		// Close all slides
 		let modules = {
+			showNav : false,
 			showPreferences : "no_slide",
 			showHistory : "no_slide",
 			showAddEntry : "no_slide"
 		}
+
 		if (module) {
 			modules = {...modules, ...module};	// Toggle "slide"/"no_slide"
 		}
@@ -100,6 +101,10 @@ class Layout extends Component {
 		// Handle toggle functionality of each widget. Only one must show 
 		// while others remain hidden from view
 		switch (element) {
+			
+			case "nav" : 
+				action = (this.state.showNav === false) ? true : false;
+				this.showComponent({showPreferences : action});
 
 			case "preferences" : 
 				action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
@@ -110,7 +115,7 @@ class Layout extends Component {
 				action = (this.state.showHistory === "no_slide") ? "slide" : "no_slide";
 				this.showComponent({showHistory : action});
 			break;
-
+			
 			case "addEntry" : 
 				action = (this.state.showAddEntry === "no_slide") ? "slide" : "no_slide";
 				this.showComponent({showAddEntry : action});
@@ -120,7 +125,6 @@ class Layout extends Component {
 				this.showComponent();
 
 			default : ;
-
 		}
 	}
 
@@ -140,7 +144,7 @@ class Layout extends Component {
 						showNav={this.state.showNav}
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
-						title={"Weight Overview"}
+						title="Weight Overview"
 					/>
 
 					<Preferences preferences={this.state.showPreferences}/>

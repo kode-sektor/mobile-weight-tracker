@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
+import axios from 'axios';
+
 import FontAwesome from 'react-fontawesome';
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import styles from './AddEntry.module.css';
+
+import {URL} from '../../config';
 
 class AddEntry extends React.Component {
     state = {
@@ -20,7 +24,23 @@ class AddEntry extends React.Component {
     };
 
     setTarget = () => {
+        const obj = {
+            name: "Fred",
+            surname: "Flinstone"
+        }
+        let data = JSON.stringify({
+            target : this.state.target
+        });
 
+        axios.post('http://localhost:3001/target', {
+            obj
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
 
     addEntries = () => {
@@ -35,7 +55,7 @@ class AddEntry extends React.Component {
 
                 <form id="frmEntry" method="POST" onSubmit={e => this.saveEntry()}>
 
-                    <legend className="legTitle">Add A Record</legend>
+                    <legend className="legTitle">{this.props.entries < 1 ? "Set Target" : "Add A Record"}</legend>
 
                     <section className="target" className={this.props.entries < 1 ? "" : "hidden" }>
                         <div className="form-group">
