@@ -4,5 +4,5 @@ This is an application to enable users track their weight over time. This applic
 
 ## Languages & Deployment
 
-The **Mobile Weight Tracker** would be React-powered. Data used for the application is light-weight and personal to the user, thus JSON *should suffice*. 
+The **Mobile Weight Tracker** would be React-powered. Data used for the application is light-weight and personal to the user, thus Firebase *should suffice*. 
 App would be deployed on Netlify. 
