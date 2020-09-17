@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -11,10 +10,6 @@ import History from '../History/History';
 import AddEntry from '../AddEntry/AddEntry';
 import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
-
-// Import Functions and Config Vars
-import {Capitalise} from '../function';
-import {URL} from '../../config';
 
 import styles from './home.module.css';
 
@@ -36,18 +31,6 @@ class Layout extends Component {
 	}
 
 	componentWillMount() {
-		// Fetch from db
-		if (this.state.entries.length < 1) {	
-			axios.all([
-				axios.get(`${URL}/target`),	// Fetch from team db
-				axios.get(`${URL}/entries`)	
-			]).then(axios.spread((res1, res2) => {
-				console.log(res1.data, res2.data);
-				this.setState({
-					// teams : response.data
-				})
-			}))
-		}
 	}
 
 	componentDidMount() {
@@ -105,6 +88,7 @@ class Layout extends Component {
 			case "nav" : 
 				action = (this.state.showNav === false) ? true : false;
 				this.showComponent({showPreferences : action});
+			break;
 
 			case "preferences" : 
 				action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
@@ -123,6 +107,7 @@ class Layout extends Component {
 
 			case "return" : 
 				this.showComponent();
+			break;
 
 			default : ;
 		}

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import clock from '../../images/icons/clock.svg';
 import gear from '../../images/icons/gear.svg';

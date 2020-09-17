@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import FontAwesome from 'react-fontawesome';
+import React from 'react';
 
 import styles from './WeightTrack.module.css';
 

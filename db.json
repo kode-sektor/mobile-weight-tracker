@@ -1,4 +1,8 @@
 {
     "target" : ["Not yet specified"],
-    "entries" : []
+    "weight" : [{
+                    "date" : "...",
+                    "value" : "...",
+                    "unit" : "..."
+                }]
 }

@@ -1,5 +1,5 @@
-const URL = 'http://localhost:3001';
+const ibToKg = 0.45359237;
 
 export {
-    URL
+    ibToKg
 }
