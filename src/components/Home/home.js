@@ -27,7 +27,7 @@ class Layout extends Component {
 		showAddEntry : "no_slide", 
 
 		target : "",
-		entries : [1]
+		entries : []
 	}
 
 	componentWillMount() {

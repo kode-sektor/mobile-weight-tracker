@@ -22,9 +22,11 @@ class AddEntry extends React.Component {
     };
    
     selectDate = (date) => {
-        console.log(date);
+        // date uses the exact JAVASCRIPT DATE object.
+        let time = date.getTime();
+        
         this.setState({
-          startDate: date
+          startDate: time
         });
     };
 
@@ -38,47 +40,37 @@ class AddEntry extends React.Component {
         // Upload to firebase 
         const upload = () => {
             if (setTargetOrAddRecord === "setTarget") {
-                firebaseDB.ref('user/0').push({
-                    'date' : 1600327399,
-                    'value' : this.state.weight,
-                    'unit' : this.state.kgOrIb
-                })
-                // firebaseUser.update({
-                //     '0/target/0/value' : this.state.target,
-                //     '0/target/0/unit' : this.state.kgOrIb
-                // });
+                firebaseUser.update({
+                    '0/target/0/value' : this.state.target,
+                    '0/target/0/unit' : this.state.kgOrIb
+                });
             } else {
                 const entry = {
-                    "weight" : {
-                        "date" : firebase.database.ServerValue.TIMESTAMP,
-                        "value" : this.state.weight
-                    }
-                    // firebaseWeight.push({
-                    //     'date' : 1600327399,
-                    //     'value' : this.state.weight,
-                    //     'unit' : this.staet.kgOrIb
-                    // })
+                    'date' : this.state.startDate,
+                    'value' : this.state.weight,
+                    'unit' : this.state.kgOrIb
                 }
+                firebaseDB.ref('user/0').push(entry);
             }
         }
 
         const validate = (course) => {  // course of action: set weight or add entry
             if (this.state.kgOrIb === "kg") {
-                if (course < 0 || course === "") {
+                if (course < 1 || course === "") {  // Error for less than 1kg
                     alert(errorMsg + "above 0kg")
-                } else if (this.state.target > 500 ) {
+                } else if (this.state.target > 500 ) {  // Error for greater than 500kg
                     alert (errorMsg + "under 500kg")
                 } else {
-                    this.setState({processForm : true});
+                    this.setState({processForm : true});    // Upload form data if no error
                     upload();
                 }
             } else {    // Ib
-                if (course < 0 || course === "") {
+                if (course < 1 || course === "") {  // Error for less than 1kg
                     alert(errorMsg + "above 0Ib")
-                } else if (course > (500/ibToKg).toFixed(2)) {
+                } else if (course > (500/ibToKg).toFixed(2)) {  // Error for greater than 500kg
                     alert (errorMsg + "under " + (500/ibToKg).toFixed(2))
                 } else {
-                    this.setState({processForm : true});
+                    this.setState({processForm : true});    // Upload form data if no error
                     upload();
                 }
             }
