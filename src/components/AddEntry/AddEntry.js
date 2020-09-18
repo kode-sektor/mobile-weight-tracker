@@ -10,16 +10,26 @@ import styles from './AddEntry.module.css';
 import {ibToKg} from '../../config';
 
 // DB
-import {firebase, firebaseDB, firebaseUser, firebaseWeight} from '../../firebase';
+import {firebaseDB, firebaseTarget, firebaseWeight} from '../../firebase';
 
 class AddEntry extends React.Component {
+
     state = {
+        initial : false,
         processForm : false,
         kgOrIb: "kg",
         weight: 180,
         target: 180,
-        startDate: new Date()
+        startDate: (new Date()).getTime()
     };
+
+    componentWillMount = () => {
+        firebaseDB.ref('user/0/target/0').once('value').then((snapshot) => {
+            let initial = (snapshot.val()).initial;
+            this.setState({initial});
+            console.log(this.state.initial);
+        });
+    }
    
     selectDate = (date) => {
         // date uses the exact JAVASCRIPT DATE object.
@@ -35,22 +45,23 @@ class AddEntry extends React.Component {
         let errorMsg = "Please set weight ";
 
         // Check whether user is setting weight target or adding weight entry
-        let setTargetOrAddRecord = this.props.entries < 1 ? "setTarget" : "addRecord";
+        let setTargetOrAddRecord = this.state.initial === true ? "setTarget" : "addRecord";
 
         // Upload to firebase 
         const upload = () => {
             if (setTargetOrAddRecord === "setTarget") {
-                firebaseUser.update({
-                    '0/target/0/value' : this.state.target,
-                    '0/target/0/unit' : this.state.kgOrIb
+                firebaseTarget.update({
+                    '0/initial' : false,
+                    '0/value' : (Number(this.state.target)).toFixed(1),
+                    '/0/unit' : this.state.kgOrIb
                 });
             } else {
                 const entry = {
                     'date' : this.state.startDate,
-                    'value' : this.state.weight,
+                    'value' : (Number(this.state.weight)).toFixed(1),
                     'unit' : this.state.kgOrIb
                 }
-                firebaseDB.ref('user/0').push(entry);
+                firebaseWeight.push(entry);
             }
         }
 
@@ -94,9 +105,9 @@ class AddEntry extends React.Component {
                 <form id="frmEntry" method="POST" onSubmit={e => this.saveEntry()}>
 
                     {/*this.props.entries is to check whether to EDIT or ADD an entry to database*/}
-                    <legend className="legTitle">{this.props.entries < 1 ? "Set Target" : "Add A Record"}</legend>
+                    <legend className="legTitle">{this.state.initial === true ? "Set Target" : "Add A Record"}</legend>
 
-                    <section className="target" className={this.props.entries < 1 ? "" : "hidden" }>
+                    <section className="target" className={this.state.initial === true ? "" : "hidden" }>
                         <div className="form-group">
                             <input type="number" className="target-entry" id="weight" autoComplete="off" placeholder="Target" max="1000" min="1" name="weight" autoFocus    
                                 defaultValue="180"
@@ -110,7 +121,7 @@ class AddEntry extends React.Component {
                         </div>
                     </section>
 
-                    <section className="weight" className={this.props.entries < 1 ? "hidden" : "" }>
+                    <section className="weight" className={this.state.initial === true ? "hidden" : "" }>
                         <div className="form-group">
                             <input type="number" className="weight-entry" id="weight" autoComplete="off" placeholder="Weight" max="1000" min="1" name="weight" autoFocus    
                                 defaultValue="180"
@@ -127,8 +138,8 @@ class AddEntry extends React.Component {
                             <DatePicker
                                 selected={this.state.startDate}
                                 onChange={this.selectDate}
-                                dateFormat="yyyy-mm-dd"
                                 maxDate={new Date()}
+                                // dateFormat="yyyy-mm-dd"
                                 // minDate={new Date()}
                                 // filterDate={date => date.getDay() !== 6 && date.getDay() !==0} // filter Weekends
                                 // isClearable  // button to clear field

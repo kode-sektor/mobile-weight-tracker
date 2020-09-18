@@ -11,6 +11,10 @@ import AddEntry from '../AddEntry/AddEntry';
 import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
 
+// DB
+import {firebaseDB, firebaseTarget, firebaseWeight, firebaseLoop} from '../../firebase';
+
+
 import styles from './home.module.css';
 
 class Layout extends Component {
@@ -31,6 +35,23 @@ class Layout extends Component {
 	}
 
 	componentWillMount() {
+		firebaseDB.ref('user/0/target/0').once('value').then((snapshot) => {
+			let initial = (snapshot.val()).initial;
+
+			// Initial is a check whether user is just beginning to use this application
+			// A new user has no weight entries yet. Check that before looping
+			if (!initial) {
+				firebaseWeight.once('value').then((snapshot) => {
+					let data = firebaseLoop(snapshot);
+					console.log(data);
+					if (data.length) {
+						this.setState({
+							entries : data
+						});
+					}
+				})
+			}
+		})
 	}
 
 	componentDidMount() {
@@ -142,7 +163,7 @@ class Layout extends Component {
 
 					<WeightTrack />
 
-					<WeightGraph />
+					<WeightGraph entries={this.state.entries}/>
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}
