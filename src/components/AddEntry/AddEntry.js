@@ -9,6 +9,9 @@ import styles from './AddEntry.module.css';
 
 import {ibToKg} from '../../config';
 
+// DB
+import {firebase, firebaseDB, firebaseUser, firebaseWeight} from '../../firebase';
+
 class AddEntry extends React.Component {
     state = {
         processForm : false,
@@ -19,13 +22,45 @@ class AddEntry extends React.Component {
     };
    
     selectDate = (date) => {
+        console.log(date);
         this.setState({
           startDate: date
         });
     };
 
     saveEntry = () => {
+
         let errorMsg = "Please set weight ";
+
+        // Check whether user is setting weight target or adding weight entry
+        let setTargetOrAddRecord = this.props.entries < 1 ? "setTarget" : "addRecord";
+
+        // Upload to firebase 
+        const upload = () => {
+            if (setTargetOrAddRecord === "setTarget") {
+                firebaseDB.ref('user/0').push({
+                    'date' : 1600327399,
+                    'value' : this.state.weight,
+                    'unit' : this.state.kgOrIb
+                })
+                // firebaseUser.update({
+                //     '0/target/0/value' : this.state.target,
+                //     '0/target/0/unit' : this.state.kgOrIb
+                // });
+            } else {
+                const entry = {
+                    "weight" : {
+                        "date" : firebase.database.ServerValue.TIMESTAMP,
+                        "value" : this.state.weight
+                    }
+                    // firebaseWeight.push({
+                    //     'date' : 1600327399,
+                    //     'value' : this.state.weight,
+                    //     'unit' : this.staet.kgOrIb
+                    // })
+                }
+            }
+        }
 
         const validate = (course) => {  // course of action: set weight or add entry
             if (this.state.kgOrIb === "kg") {
@@ -35,6 +70,7 @@ class AddEntry extends React.Component {
                     alert (errorMsg + "under 500kg")
                 } else {
                     this.setState({processForm : true});
+                    upload();
                 }
             } else {    // Ib
                 if (course < 0 || course === "") {
@@ -43,12 +79,10 @@ class AddEntry extends React.Component {
                     alert (errorMsg + "under " + (500/ibToKg).toFixed(2))
                 } else {
                     this.setState({processForm : true});
+                    upload();
                 }
             }
         }
-
-        // Check whether user is setting weight target or adding weight entry
-        let setTargetOrAddRecord = this.props.entries < 1 ? "setTarget" : "addRecord";
 
         if (setTargetOrAddRecord === "setTarget") {
             validate(this.state.target)
@@ -95,21 +129,20 @@ class AddEntry extends React.Component {
                                 <option value="kg">(Kg)</option>
                                 <option value="ib">(Ib)</option>
                             </select>
-                            onChange={({ target: { value } }) => this.setState({weight : value})}
                         </div>
                             
                         <div className="form-group">
                             <DatePicker
                                 selected={this.state.startDate}
                                 onChange={this.selectDate}
-                                dateFormat="yyyy/MM/dd"
+                                dateFormat="yyyy-mm-dd"
                                 maxDate={new Date()}
                                 // minDate={new Date()}
                                 // filterDate={date => date.getDay() !== 6 && date.getDay() !==0} // filter Weekends
                                 // isClearable  // button to clear field
                                 // showYearDropdown
                                 // scrollableMonthYearDropDown
-                            />
+                            ><div style={{ color: "red", padding: "0 20px" }}>Enter date weight was recorded !</div></DatePicker>
                             <FontAwesome className={styles.calendar_icon} name="calendar" />
                         </div>
 

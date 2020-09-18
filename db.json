@@ -1,8 +1,15 @@
 {
-    "target" : ["Not yet specified"],
-    "weight" : [{
-                    "date" : "...",
-                    "value" : "...",
-                    "unit" : "..."
-                }]
+    "user" : [
+    	{
+    		"target" : [{
+    			"value" : "180",
+    			"unit" : "kg"
+    		}],
+    		"weight" : [{
+
+			}]
+    	}
+        
+    ]
+    
 }
