@@ -92,15 +92,19 @@ class Layout extends Component {
 	}
 
 	toggleComponent = (evt) => {
-		
-		let element = (evt.currentTarget.id);	// preferences, history
+
+		let element = '';
+		let action = '';
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
 		// override the ID because it is dedicated to close all panels
-		element = ((evt.currentTarget.className).indexOf("return") !== -1) ? "return" : element;	
 
-		let action = "";
+		if ((evt === 'home') || (evt.currentTarget.className).indexOf("return") !== -1) {
+			element = 'return';
+		} else {
+			element = (evt.currentTarget.id);	// preferences, history
+		}
 
 		// Handle toggle functionality of each widget. Only one must show 
 		// while others remain hidden from view
@@ -150,8 +154,7 @@ class Layout extends Component {
 						showNav={this.state.showNav}
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
-						title="Weight Overview"
-					/>
+						title="Weight Overview"/>
 
 					<Preferences preferences={this.state.showPreferences}/>
 
@@ -159,7 +162,9 @@ class Layout extends Component {
 
 					<AddEntry addEntry={this.state.showAddEntry}
 						entries={(this.state.entries).length}
-						showComponent={(evt) => this.toggleComponent(evt)}/>
+						showComponent={(evt) => this.toggleComponent(evt)}
+						showHome={() => this.toggleComponent('home')}
+						/>
 
 					<WeightTrack />
 

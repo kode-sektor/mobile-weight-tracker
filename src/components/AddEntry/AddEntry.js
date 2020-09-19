@@ -27,7 +27,6 @@ class AddEntry extends React.Component {
         firebaseDB.ref('user/0/target/0').once('value').then((snapshot) => {
             let initial = (snapshot.val()).initial;
             this.setState({initial});
-            console.log(this.state.initial);
         });
     }
    
@@ -46,24 +45,6 @@ class AddEntry extends React.Component {
 
         // Check whether user is setting weight target or adding weight entry
         let setTargetOrAddRecord = this.state.initial === true ? "setTarget" : "addRecord";
-
-        // Upload to firebase 
-        const upload = () => {
-            if (setTargetOrAddRecord === "setTarget") {
-                firebaseTarget.update({
-                    '0/initial' : false,
-                    '0/value' : (Number(this.state.target)).toFixed(1),
-                    '/0/unit' : this.state.kgOrIb
-                });
-            } else {
-                const entry = {
-                    'date' : this.state.startDate,
-                    'value' : (Number(this.state.weight)).toFixed(1),
-                    'unit' : this.state.kgOrIb
-                }
-                firebaseWeight.push(entry);
-            }
-        }
 
         const validate = (course) => {  // course of action: set weight or add entry
             if (this.state.kgOrIb === "kg") {
@@ -85,6 +66,26 @@ class AddEntry extends React.Component {
                     upload();
                 }
             }
+        }
+
+        // Upload to firebase 
+        const upload = () => {
+            if (setTargetOrAddRecord === "setTarget") {
+                firebaseTarget.update({
+                    '0/initial' : false,
+                    '0/value' : (Number(this.state.target)).toFixed(1),
+                    '/0/unit' : this.state.kgOrIb
+                });
+            } else {
+                const entry = {
+                    'date' : this.state.startDate,
+                    'value' : (Number(this.state.weight)).toFixed(1),
+                    'unit' : this.state.kgOrIb
+                }
+                firebaseWeight.push(entry);
+            }
+
+            this.props.showHome() // Return to home after form submission
         }
 
         if (setTargetOrAddRecord === "setTarget") {
@@ -162,7 +163,7 @@ class AddEntry extends React.Component {
                             </span>
                         </button>
                         <button type="button" className="enter main"
-                            onClick={ e => this.saveEntry()}>
+                            onClick={ e => this.saveEntry() }>
                             <span className="icon-part">
                                 <FontAwesome name="check" />
                             </span>
