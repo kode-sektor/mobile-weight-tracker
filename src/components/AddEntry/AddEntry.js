@@ -70,18 +70,30 @@ class AddEntry extends React.Component {
 
         // Upload to firebase 
         const upload = () => {
-            if (setTargetOrAddRecord === "setTarget") {
+
+            if (setTargetOrAddRecord === "setTarget") { // Set Target
                 firebaseTarget.update({
                     '0/initial' : false,
                     '0/value' : (Number(this.state.target)).toFixed(1),
                     '/0/unit' : this.state.kgOrIb
                 });
             } else {
-                const entry = {
+                const entry = { // Upload new weight entry
                     'date' : this.state.startDate,
                     'value' : (Number(this.state.weight)).toFixed(1),
                     'unit' : this.state.kgOrIb
                 }
+
+                // Ensure user's uploaded entries do not exceed 50
+                if ((this.props.entries).length === 50) { 
+                    firebaseWeight.limitToLast(1).once('value').then((snapshot)=> { // First fetch
+                        let delRecord = Object.keys(snapshot.val())[0]; // Get record key: MHXzP0KO9FrXMhNQ6UP
+                        firebaseDB.ref(`user/0/weight/${delRecord}`).remove().catch((e)=>{  // Delete
+                            console.log(e)
+                        })
+                    })
+                }
+
                 firebaseWeight.push(entry);
             }
 

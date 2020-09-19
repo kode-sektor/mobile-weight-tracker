@@ -154,7 +154,8 @@ class Layout extends Component {
 						showNav={this.state.showNav}
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
-						title="Weight Overview"/>
+						title="Weight Overview"
+					/>
 
 					<Preferences preferences={this.state.showPreferences}/>
 
@@ -164,7 +165,8 @@ class Layout extends Component {
 						entries={(this.state.entries).length}
 						showComponent={(evt) => this.toggleComponent(evt)}
 						showHome={() => this.toggleComponent('home')}
-						/>
+						entries={this.state.entries}
+					/>
 
 					<WeightTrack />
 
