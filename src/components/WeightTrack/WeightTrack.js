@@ -180,22 +180,19 @@ class WeightTrack extends Component {
                 let lastRecord = entries[0].weight[`${kgOrIb}`];
                 let firstRecord = entries[entries.length - 1].weight[`${kgOrIb}`];
 
-                console.log(lastRecord, firstRecord);
                 let total = (lastRecord - firstRecord).toFixed(1);
 
                 return(
                     <>(<span>{total} {this.state.kgOrIb}</span>)</>
                 )
-
             }
-                
             break;
         }
     }
     
     render () {
 
-        console.log(this.state);
+        // console.log(this.state);
         // console.log(this.props.target.weight.kg);
 
         return (
