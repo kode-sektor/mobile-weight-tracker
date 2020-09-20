@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import styles from './AddEntry.module.css';
 
-import {ibToKg} from '../../config';
+import {ibToKg} from '../../config';    // Kg-to-Ib factor
 
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight} from '../../firebase';
@@ -18,13 +18,15 @@ class AddEntry extends React.Component {
         initial : false,
         processForm : false,
         kgOrIb: "kg",
-        weight: 180,
-        target: 180,
+        weight : {
+            "kg" : 180,
+            "ib" : 396.8
+        },
         startDate: (new Date()).getTime()
     };
 
     componentWillMount = () => {
-        firebaseDB.ref('user/0/target/0').once('value').then((snapshot) => {
+        firebaseTarget.once('value').then((snapshot) => {
             let initial = (snapshot.val()).initial;
             this.setState({initial});
         });
@@ -46,42 +48,22 @@ class AddEntry extends React.Component {
         // Check whether user is setting weight target or adding weight entry
         let setTargetOrAddRecord = this.state.initial === true ? "setTarget" : "addRecord";
 
-        const validate = (course) => {  // course of action: set weight or add entry
-            if (this.state.kgOrIb === "kg") {
-                if (course < 1 || course === "") {  // Error for less than 1kg
-                    alert(errorMsg + "above 0kg")
-                } else if (this.state.target > 500 ) {  // Error for greater than 500kg
-                    alert (errorMsg + "under 500kg")
-                } else {
-                    this.setState({processForm : true});    // Upload form data if no error
-                    upload();
-                }
-            } else {    // Ib
-                if (course < 1 || course === "") {  // Error for less than 1kg
-                    alert(errorMsg + "above 0Ib")
-                } else if (course > (500/ibToKg).toFixed(2)) {  // Error for greater than 500kg
-                    alert (errorMsg + "under " + (500/ibToKg).toFixed(2))
-                } else {
-                    this.setState({processForm : true});    // Upload form data if no error
-                    upload();
-                }
-            }
-        }
-
         // Upload to firebase 
-        const upload = () => {
+        const upload = () => {          
 
             if (setTargetOrAddRecord === "setTarget") { // Set Target
                 firebaseTarget.update({
-                    '0/initial' : false,
-                    '0/value' : (Number(this.state.target)).toFixed(1),
-                    '/0/unit' : this.state.kgOrIb
+                    'initial' : false,
+                    'weight' : this.state.weight
+                }).then(() => {
+                    this.props.setInitial();    // Set initial for home page
+                    this.setState({initial: false});    // Do the same but for this page
+                    window.location.reload();
                 });
             } else {
                 const entry = { // Upload new weight entry
                     'date' : this.state.startDate,
-                    'value' : (Number(this.state.weight)).toFixed(1),
-                    'unit' : this.state.kgOrIb
+                    'weight' : this.state.weight
                 }
 
                 // Ensure user's uploaded entries do not exceed 50
@@ -97,15 +79,33 @@ class AddEntry extends React.Component {
                 firebaseWeight.push(entry);
             }
 
-            this.props.showHome() // Return to home after form submission
+            // this.props.showHome() // Return to home after form submission
+            window.location.reload();
         }
 
-        if (setTargetOrAddRecord === "setTarget") {
-            validate(this.state.target)
+        const validate = (course) => {  // course of action: set weight or add entry
+            if (this.state.kgOrIb === "kg") {
+                if (course < 1 || course === "") {  // Error for less than 1kg
+                    alert(errorMsg + "above 0kg")
+                } else if (course.kg > 500 ) {  // Error for greater than 500kg
+                    alert (errorMsg + "under 500kg")
+                } else {
+                    this.setState({processForm : true});    // Upload form data if no error
+                    upload();
+                }
+            } else {    // Ib
+                if (course < 1 || course === "") {  // Error for less than 1kg
+                    alert(errorMsg + "above 0Ib")
+                } else if (course > (500/course.ib).toFixed(1)) {  // Error for greater than 500kg
+                    alert (errorMsg + "under " + (500/ibToKg).toFixed(1))
+                } else {
+                    this.setState({processForm : true});    // Upload form data if no error
+                    upload();
+                }
+            }
         }
-        else {
-            validate(this.state.weight)
-        }
+
+        validate(this.state.weight);
         
     }
    
@@ -120,34 +120,41 @@ class AddEntry extends React.Component {
                     {/*this.props.entries is to check whether to EDIT or ADD an entry to database*/}
                     <legend className="legTitle">{this.state.initial === true ? "Set Target" : "Add A Record"}</legend>
 
-                    <section className="target" className={this.state.initial === true ? "" : "hidden" }>
+                    <section className="weight">
+
                         <div className="form-group">
                             <input type="number" className="target-entry" id="weight" autoComplete="off" placeholder="Target" max="1000" min="1" name="weight" autoFocus    
-                                defaultValue="180"
-                                onChange={({ target: { value } }) => this.setState({target : value})}
+                                defaultValue={this.state.kgOrIb === 'kg' ? 180 : 396.8}
+                                onChange={({ target: { value } }) => { 
+                                    if (this.state.kgOrIb === 'kg') {
+                                        this.setState({weight : {
+                                                kg : (Number(value)).toFixed(1),
+                                                ib : (Number(value) / ibToKg).toFixed(1)
+                                            }
+                                        })
+                                    } else {
+                                        this.setState({weight : {
+                                                kg : (Number(value) * ibToKg).toFixed(1),
+                                                ib : (Number(value)).toFixed(1)
+                                            }
+                                        })
+                                    }
+                                }}
                             />
                             <select className={styles.weight_unit}
-                                onChange={({ target: { value } }) => this.setState({kgOrIb : value})}> 
-                                <option value="kg">(Kg)</option>
-                                <option value="ib">(Ib)</option>
-                            </select>
-                        </div>
-                    </section>
-
-                    <section className="weight" className={this.state.initial === true ? "hidden" : "" }>
-                        <div className="form-group">
-                            <input type="number" className="weight-entry" id="weight" autoComplete="off" placeholder="Weight" max="1000" min="1" name="weight" autoFocus    
-                                defaultValue="180"
-                                onChange={({ target: { value } }) => this.setState({weight : value})}
-                            />
-                            <select className={styles.weight_unit}
-                                onChange={({ target: { value } }) => this.setState({kgOrIb : value})}> 
+                                onChange={({ target: { value } }) => {
+                                    if (this.state.kgOrIb === 'kg') {
+                                        this.setState({kgOrIb : 'kg'})
+                                    } else {
+                                        this.setState({kgOrIb : 'ib'})}
+                                    }
+                            }> 
                                 <option value="kg">(Kg)</option>
                                 <option value="ib">(Ib)</option>
                             </select>
                         </div>
                             
-                        <div className="form-group">
+                        <div className={this.state.initial === true ? 'hidden form-group' : 'form-group'}>
                             <DatePicker
                                 selected={this.state.startDate}
                                 onChange={this.selectDate}

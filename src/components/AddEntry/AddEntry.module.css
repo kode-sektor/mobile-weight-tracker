@@ -8,6 +8,7 @@
     font-weight: bold;;
 }
 .weight_unit option {
+    font-weight: bold;
 }
 .calendar_icon, .unit {
     position: absolute;

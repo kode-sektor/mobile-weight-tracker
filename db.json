@@ -3,8 +3,11 @@
     	{
     		"target" : [{
 				"initial" : true,
-    			"value" : 180.0,
-    			"unit" : "kg"
+				"kgOrIb" : "kg",
+				"weight" : {
+					"kg" : 180,
+					"ib" : 396.8
+				}
     		}],
     		"weight" : [{
 

@@ -14,7 +14,6 @@ import WeightGraph from '../WeightGraph/WeightGraph';
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseLoop} from '../../firebase';
 
-
 import styles from './home.module.css';
 
 class Layout extends Component {
@@ -25,30 +24,44 @@ class Layout extends Component {
 	}
 
 	state = {
+		initial : true,
 		showNav : false,
 		showPreferences : "no_slide",
 		showHistory : "no_slide",
 		showAddEntry : "no_slide", 
 
-		target : "",
+		target : {
+			weight : {
+				kg : '',
+				ib : ''
+			}
+		},
+		kgOrIb : "kg",
 		entries : []
 	}
 
 	componentWillMount() {
-		firebaseDB.ref('user/0/target/0').once('value').then((snapshot) => {
+
+		firebaseTarget.once('value').then((snapshot) => {
 			let initial = (snapshot.val()).initial;
 
 			// Initial is a check whether user is just beginning to use this application
 			// A new user has no weight entries yet. Check that before looping
 			if (!initial) {
-				firebaseWeight.once('value').then((snapshot) => {
-					let data = firebaseLoop(snapshot);
-					console.log(data);
-					if (data.length) {
-						this.setState({
-							entries : data
-						});
-					}
+				firebaseTarget.once('value').then((snapshot) => {
+					let target = snapshot.val();
+
+					firebaseWeight.once('value').then((snapshot) => {
+						let data = firebaseLoop(snapshot);
+						console.log(data);
+						if (data.length) {
+							this.setState({
+								initial,
+								target,
+								entries : data
+							});
+						}
+					})
 				})
 			}
 		})
@@ -66,6 +79,15 @@ class Layout extends Component {
 		if(event.keyCode === 27) {
 		    this.showComponent();	// Escape to close all open components
 		}
+	}
+
+	// Why this is important: 
+	// This whole app runs on just one route, meaning all other routes are fake and merely hidden by CSS.
+	// Since page reload is out of it, only change of state is what is left to refresh the app. This is 
+	// exactly the reason a state 'initial' was created to refresh and will be toggled when user first
+	// sets a weight target in 'AddEntry.js' component
+	setInitial = (bool=false) => {
+		this.setState({initial : bool})
 	}
 
 	toggleSidenav = (action) => {		
@@ -165,10 +187,15 @@ class Layout extends Component {
 						entries={(this.state.entries).length}
 						showComponent={(evt) => this.toggleComponent(evt)}
 						showHome={() => this.toggleComponent('home')}
+						setInitial={()=>this.setInitial()}
 						entries={this.state.entries}
+						history={this.props.history}
 					/>
 
-					<WeightTrack />
+					<WeightTrack 
+						target={this.state.target}
+						kgOrIb={this.state.kgOrIb}
+						entries={this.state.entries}/>
 
 					<WeightGraph entries={this.state.entries}/>
 

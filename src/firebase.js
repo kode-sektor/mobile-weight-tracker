@@ -29,7 +29,7 @@ const firebaseLoop = (snapshot) => {
 	return data;
 }
 
-const firebaseTarget = firebaseDB.ref('user/0/target');
+const firebaseTarget = firebaseDB.ref('user/0/target/0');
 const firebaseWeight = firebaseDB.ref('user/0/weight');
 
 export {
