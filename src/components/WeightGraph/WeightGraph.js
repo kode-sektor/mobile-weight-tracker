@@ -31,19 +31,48 @@ class WeightGraph extends Component {
     }
 
     chartData = () => {
+
+        let chartdata = {
+            labels = [], 
+            datasets = [],
+
+            backgroundColor : 'transparent',
+            pointBackgroundColor: '#ff0000',
+            pointBorderColor: '#ff0000',
+            borderColor: '#ff0000'
+        }
+
         const labels = [], datasets = [];
+
+        const entries = this.props.entries.map((item, i) => {
+
+            let date = item.date;   // 1594179272000
+            date = new Date(date);
+            let day = date.getDate();   // 18
+            let month = (date.getMonth() + 1);  // 9
+
+            let dayMonth = month + '/' + day;   // '18/9', '16/9'...
+            
+            
+
+            labels.push(dayMonth);
+
+        })
+
+        
+        
     }
 
     render () {
 
-        {console.log(this.props)}
+       // {console.log(this.props)}
 
         return (
         
             <section className={styles.no_data}>
                {/*this.props.entries.length === 0 ? "No Data" : "Data"*/}
                <Line
-                    data={this.state.chartData}
+                    data={((this.props.entries).length > 1) ? this.chartData() : null}
                     width={100}
                     height={50}
                     options={{ 
