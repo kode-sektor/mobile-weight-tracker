@@ -300,6 +300,9 @@ a.tooltip:hover span, a.tooltip:focus span {
 .fa-caret-up, .fa-trash-alt {
     color: red;
 }
+.weight-data-overview .fa {
+    font-size: 1.4em !important;
+}
 
 /*8. HELPER STYLES
 ==============================================================================================================================================================*/

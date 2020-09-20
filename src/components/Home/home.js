@@ -53,7 +53,8 @@ class Layout extends Component {
 
 					firebaseWeight.once('value').then((snapshot) => {
 						let data = firebaseLoop(snapshot);
-						console.log(data);
+						// console.log(data);
+						
 						if (data.length) {
 							this.setState({
 								initial,
