@@ -365,6 +365,10 @@ button.enter {
     text-align: center;
     font-family: var(--font-primary);
 }
+.graph-buttons button:focus {
+    box-shadow: 4px 3px 6px black;
+    opacity: 1;
+}
 
 /* APP */
 .root {
