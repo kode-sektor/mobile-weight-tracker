@@ -7,18 +7,30 @@ import FontAwesome from 'react-fontawesome';
 import styles from './History.module.css';
 
 const HistoryList = (props) => {
-    
-	return (
 
-        <section className={`${styles.historyList} ${props.history} module out`}>
+    const entryList = () => {
 
-            <ul>
-                <li className="">
+        let date = '', day = '', month = '', year = '', formattedDate = '', weight = '';
+
+        const entryHTML = props.entries.map((item) => {
+            console.log(item);
+            date = item.date;
+            date = new Date(date);
+            day = date.getDate();
+            month = date.getMonth();
+            year = (date.getFullYear()).toString().substr(-2);
+
+            formattedDate = day + '/' + month + '/' + year;
+            weight = item.weight[`${props.kgOrIb}`] + props.kgOrIb
+            
+
+            return (
+                <li key={item} className="">
                     <span className="">
-                        8/5/20
+                        {formattedDate}
                     </span>
                     <span className="">
-                        183.0Ib
+                        {weight}
                     </span>
                     <strong className="">
                         <span><FontAwesome name="caret-up" /> </span>
@@ -33,8 +45,17 @@ const HistoryList = (props) => {
                         </button>
                     </span>
                 </li>
+            )
+        }) 
 
-            </ul>
+        return entryHTML;
+    }
+    
+	return (
+
+        <section className={`${styles.historyList} ${props.history} module out`}>
+
+            <ul>{entryList()}</ul>
                 
         </section>
             

@@ -182,7 +182,10 @@ class Layout extends Component {
 
 					<Preferences preferences={this.state.showPreferences}/>
 
-					<History history={this.state.showHistory}/>
+					<History 
+						history={this.state.showHistory}
+						entries={this.state.entries}
+						kgOrIb={this.state.kgOrIb}/>
 
 					<AddEntry addEntry={this.state.showAddEntry}
 						entries={(this.state.entries).length}
