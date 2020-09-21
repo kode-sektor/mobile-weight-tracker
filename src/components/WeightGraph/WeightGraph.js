@@ -13,11 +13,11 @@ class WeightGraph extends Component {
     state = {
 
         chartData : {
-            labels : ['08/11', '09/11', '14/11', '23/11'],
+            labels : [],
             datasets : [
                 {
                     label : 'Weight',
-                    data : [180.1, 180.3, 177.4, 179.0],
+                    data : [],
                     backgroundColor : 'transparent',
                     pointBackgroundColor: '#ff0000',
                     pointBorderColor: '#ff0000',
@@ -62,13 +62,12 @@ class WeightGraph extends Component {
             datasets.push(weight);
         })
 
-        chartData.labels.push(labels);
-        chartData.datasets[0].data.push(datasets);
+        chartData.labels = labels;
+        chartData.datasets[0].data = datasets;
 
         console.log(chartData);
 
-        
-        
+        return chartData;
     }
 
     render () {
@@ -80,7 +79,7 @@ class WeightGraph extends Component {
             <section className={styles.no_data}>
                {/*this.props.entries.length === 0 ? "No Data" : "Data"*/}
                <Line
-                    data={((this.props.entries).length > 1) ? this.chartData() : null}
+                    data={((this.props.entries).length > 0) ? this.chartData() : null}
                     width={100}
                     height={50}
                     options={{ 
