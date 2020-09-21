@@ -54,7 +54,7 @@ class Layout extends Component {
 					firebaseWeight.once('value').then((snapshot) => {
 						let data = firebaseLoop(snapshot);
 						// console.log(data);
-						
+
 						if (data.length) {
 							this.setState({
 								initial,
@@ -198,7 +198,9 @@ class Layout extends Component {
 						kgOrIb={this.state.kgOrIb}
 						entries={this.state.entries}/>
 
-					<WeightGraph entries={this.state.entries}/>
+					<WeightGraph 
+						entries={this.state.entries}
+						kgOrIb={this.state.kgOrIb}/>
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}

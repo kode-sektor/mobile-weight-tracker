@@ -32,14 +32,17 @@ class WeightGraph extends Component {
 
     chartData = () => {
 
-        let chartdata = {
-            labels = [], 
-            datasets = [],
-
-            backgroundColor : 'transparent',
-            pointBackgroundColor: '#ff0000',
-            pointBorderColor: '#ff0000',
-            borderColor: '#ff0000'
+        let chartData = {
+            labels : [], 
+            datasets : [
+                {
+                    data : [],
+                    backgroundColor : 'transparent',
+                    pointBackgroundColor: '#ff0000',
+                    pointBorderColor: '#ff0000',
+                    borderColor: '#ff0000'
+                 }
+            ]
         }
 
         const labels = [], datasets = [];
@@ -53,11 +56,16 @@ class WeightGraph extends Component {
 
             let dayMonth = month + '/' + day;   // '18/9', '16/9'...
             
-            
+            let weight = item.weight[`${this.props.kgOrIb}`];   // 182.0, 181.5...
 
             labels.push(dayMonth);
-
+            datasets.push(weight);
         })
+
+        chartData.labels.push(labels);
+        chartData.datasets[0].data.push(datasets);
+
+        console.log(chartData);
 
         
         
