@@ -1,6 +1,6 @@
 
 .historyList {
-    bottom: 150px !important;
+    padding-top: 10px;
     background: #fff !important;
 }
 .historyList > ul > li {
@@ -18,6 +18,9 @@
     justify-content: space-between;
     flex-basis: 20% !important;
     margin-left: auto;
+}
+.history_date, .history_weight, .history_weight_diff, .amend_entry {
+    font-size: .8em;
 }
 .amend_entry button {
     font-size: 1em;

@@ -432,7 +432,7 @@ button.enter {
     border-bottom-right-radius: 30px;
 
     padding-top: 20px;
-    bottom: 150px !important;
+    bottom: 115px !important;
     border-radius: 0 !important;
     background: var(--mid-grey) !important;
     box-shadow: rgba(0, 0, 0, 0.4) 2px 0px;

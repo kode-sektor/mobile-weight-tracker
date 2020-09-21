@@ -13,10 +13,11 @@ const HistoryList = (props) => {
         console.log(props.entries);
 
         let date = '', day = '', month = '', year = '', deltaChange = 'caret-up',
-            formattedDate = '', weight = '', weightDiff = 0;
+            formattedDate = '', weight = '', weightDiff = 0, id = '';
 
         const entryHTML = props.entries.map((item, index) => {
-            console.log(item);
+
+            id = item.id;
             date = item.date;
             date = new Date(date);
             day = date.getDate();
@@ -40,22 +41,24 @@ const HistoryList = (props) => {
             // console.log(props.entries[index].weight[`${props.kgOrIb}`], props.entries[index + 1].weight[`${props.kgOrIb}`])
 
             return (
-                <li key={index} className="">
-                    <span className="">
+                <li key={index} className={styles.history_row}>
+                    <span className={styles.history_date}>
                         {formattedDate}
                     </span>
-                    <span className="">
+                    <span className={styles.history_weight}>
                         {weight + props.kgOrIb}
                     </span>
-                    <strong className="">
+                    <strong className={styles.history_weight_diff}>
                         {(weightDiff === '') ? '' : <span><FontAwesome name={deltaChange} /></span> }
                         <span className="">{weightDiff}</span>
                     </strong>
                     <span className={styles.amend_entry}>
-                        <button id="edit">
+                        <button id={`edit${id}`}
+                            onClick={()=> {editRecord}}>
                             <FontAwesome name="pen"/>
                         </button>
-                        <button id="delete">
+                        <button id={`delete${id}`}
+                            onClick={()=> {delRecord}}>
                             <FontAwesome name="trash-alt"/>
                         </button>
                     </span>
