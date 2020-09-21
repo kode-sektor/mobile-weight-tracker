@@ -349,6 +349,23 @@ button.enter {
     color: #fff;
 }
 
+/*Buttons for Graph Section*/
+.graph-buttons {
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    width: 100%;
+}
+.graph-buttons button {
+    padding: 3px 9px;
+    margin: 10px;
+    color: var(--blue);
+    background-color: #000;
+    flex : 0;
+    text-align: center;
+    font-family: var(--font-primary);
+}
+
 /* APP */
 .root {
     background: blue;

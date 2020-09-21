@@ -16,7 +16,6 @@ class WeightGraph extends Component {
             labels : [],
             datasets : [
                 {
-                    label : 'Weight',
                     data : [],
                     backgroundColor : 'transparent',
                     pointBackgroundColor: '#ff0000',
@@ -27,16 +26,14 @@ class WeightGraph extends Component {
         }
     }
 
-    componentWillMount = () => {
-    }
-
     chartData = () => {
 
         let chartData = {
             labels : [], 
             datasets : [
-                {
+                {   
                     data : [],
+                    label : '',
                     backgroundColor : 'transparent',
                     pointBackgroundColor: '#ff0000',
                     pointBorderColor: '#ff0000',
@@ -76,12 +73,18 @@ class WeightGraph extends Component {
 
         return (
         
-            <section className={styles.no_data}>
+            <section className={styles.graph_data}>
+
+               <div className='buttonset graph-buttons'>
+                    <button id="one-wk" onClick={()=> {}}>1W</button>
+                    <button id="one-mth" onClick={()=> {}}>1M</button>
+                    <button id="one-yr" onClick={()=> {}}>1Y</button>
+               </div>
                {/*this.props.entries.length === 0 ? "No Data" : "Data"*/}
                <Line
                     data={((this.props.entries).length > 0) ? this.chartData() : null}
                     width={100}
-                    height={50}
+                    height={70}
                     options={{ 
                         title : {
                             display : false,
@@ -92,7 +95,7 @@ class WeightGraph extends Component {
                             }
                         },
                         legend : {
-                            display : true,
+                            display : false,
                             //position : right,
                             labels : {
                                 fontColor : '#000'
@@ -120,7 +123,7 @@ class WeightGraph extends Component {
                                 }
                             ]
                         },*/
-                        maintainAspectRatio: false 
+                        // maintainAspectRatio: false 
                     }}
                 /> 
             </section>

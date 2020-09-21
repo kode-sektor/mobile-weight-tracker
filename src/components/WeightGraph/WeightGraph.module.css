@@ -1,7 +1,16 @@
-.no_data {
+.graph_data {
     display: flex;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
     height: 250px;
     text-align: center;
 }
+/* .graph_buttonset {
+    padding: 15px 0;
+    text-align: center;
+}
+.graph_buttonset button {
+    padding: 5px;
+    margin: 10px;
+} */
