@@ -71,7 +71,7 @@ class AddEntry extends React.Component {
             } else {
                 const entry = { // Upload new weight entry
                     'date' : this.state.startDate,
-                    'weight' : this.state.weight
+                    'weight' : Number(this.state.weight)
                 }
 
                 // Ensure user's uploaded entries do not exceed 50

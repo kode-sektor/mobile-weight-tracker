@@ -13,7 +13,7 @@ import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
 
 // DB
-import {firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
+import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
 
 import styles from './home.module.css';
 
@@ -30,8 +30,13 @@ class Layout extends Component {
 		showPreferences : 'no_slide',
 		showHistory : 'no_slide',
 		showAddEntry : 'no_slide', 
+
 		editEntry : {
-			showEditEntry : 'no_slide'
+			showEditEntry : 'no_slide',
+			record : {	// Record for single 
+				weight : '',
+				date : ''
+			}
 		},
 
 		target : {
@@ -119,8 +124,11 @@ class Layout extends Component {
 			showAddEntry : 'no_slide',
 			editEntry : {
 				showEditEntry : 'no_slide',
-				recordID : ''
-			}
+				record : {	// Record for single 
+					weight : '',
+					date : ''
+				}
+			},
 		}
 
 		if (module) {
@@ -129,7 +137,7 @@ class Layout extends Component {
 
 		// If no module is passed, all defaults of 'no_slide' will be passed 
 		// which will close all the slides
-		console.log(modules);
+		// console.log(module, modules);	
 		this.setState(modules);	
 	}
 
@@ -189,12 +197,33 @@ class Layout extends Component {
 
 			case 'edit' : 
 				action = (this.state.editEntry.showEditEntry === 'no_slide') ? 'slide' : 'no_slide';
-				this.showComponent({
-					editEntry : {
-						showEditEntry : action,
-						recordID
-					} 
-				});
+
+				// Fetch record for particular 
+				const fetchRecord = () => {
+
+					let val = '', unit = this.state.kgOrIb;
+			
+					firebaseDB.ref('user/0/weight/-' + recordID).once('value').then((snapshot) => {
+						val = snapshot.val();
+						
+						let weight = val.weight[`${unit}`];	// 178.2
+						let date = val.date;	// 1598933775000
+						
+						console.log(weight, date);
+
+						this.showComponent({
+							editEntry : {
+								showEditEntry : action,
+								record : {
+									weight : weight,
+									date : date
+								}
+							} 
+						});
+					})
+				}
+
+				fetchRecord();
 			break;
 
 			case 'return' : 
@@ -253,9 +282,9 @@ class Layout extends Component {
 						kgOrIb={this.state.kgOrIb}/>
 
 					<EditEntry 
-						editEntry={this.state.editEntry.showEditEntry}
+						editEntry={this.state.editEntry}
 						showComponent={(evt) => this.toggleComponent(evt)}
-						recordID={this.state.recordID}/>
+						kgOrIb={this.state.kgOrIb}/>
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}/>

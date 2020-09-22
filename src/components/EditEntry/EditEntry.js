@@ -10,7 +10,7 @@ import styles from '../AddEntry/AddEntry.module.css';
 import {ibToKg} from '../../config';    // Kg-to-Ib factor
 
 // DB
-import {firebaseDB, firebaseTarget, firebaseWeight} from '../../firebase';
+import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb} from '../../firebase';
 
 class AddEntry extends React.Component {
 
@@ -22,14 +22,16 @@ class AddEntry extends React.Component {
             "kg" : 180,
             "ib" : 396.8
         },
-        startDate: (new Date()).getTime()
+        weight : '',
     }
    
     render() {
 
+        console.log(this.props);
+
         return (
 
-            <section className={`${styles.frmEntry} module ${this.props.editEntry}`}>
+            <section className={`${styles.frmEntry} module ${this.props.editEntry.showEditEntry}`}>
 
                 <form id="frmEntry" method="POST" onSubmit={e => this.saveEntry()}>
 
@@ -40,7 +42,7 @@ class AddEntry extends React.Component {
 
                         <div className="form-group">
                             <input type="number" className="target-entry" id="weight" autoComplete="off" placeholder="Target" max="1000" min="1" name="weight" autoFocus    
-                                defaultValue={this.state.kgOrIb === 'kg' ? 180 : 396.8}
+                                defaultValue={this.props.editEntry.record.weight}
                                 onChange={({ target: { value } }) => { 
                                     if (this.state.kgOrIb === 'kg') {
                                         this.setState({weight : {
@@ -72,7 +74,7 @@ class AddEntry extends React.Component {
                             
                         <div className={this.state.initial === true ? 'hidden form-group' : 'form-group'}>
                             <DatePicker
-                                selected={this.state.startDate}
+                                selected={this.props.editEntry.record.date}
                                 onChange={this.selectDate}
                                 maxDate={new Date()}
                                 // dateFormat="yyyy-mm-dd"
