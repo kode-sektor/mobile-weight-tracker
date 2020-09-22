@@ -10,8 +10,6 @@ const HistoryList = (props) => {
 
     const entryList = () => {
 
-        console.log(props.entries);
-
         let date = '', day = '', month = '', year = '', deltaChange = 'caret-up',
             formattedDate = '', weight = '', weightDiff = 0, id = '';
 
@@ -34,11 +32,10 @@ const HistoryList = (props) => {
                 
                 deltaChange = (weightDiff.indexOf('-') ? 'caret-up' : 'caret-down');
 
-                weightDiff = weightDiff.replace('-', '') + props.kgOrIb;  // 2.0kg
+                weightDiff = weightDiff.replace('-', '') + props.kgOrIb;  // -2.0kg to 2.0kg
             } else {
                 weightDiff = '';    // Override with empty value for last record
             }
-            // console.log(props.entries[index].weight[`${props.kgOrIb}`], props.entries[index + 1].weight[`${props.kgOrIb}`])
 
             return (
                 <li key={index} className={styles.history_row}>
@@ -54,11 +51,11 @@ const HistoryList = (props) => {
                     </strong>
                     <span className={styles.amend_entry}>
                         <button id={`edit${id}`}
-                            onClick={()=> {editRecord}}>
+                            onClick={props.showComponent}>
                             <FontAwesome name="pen"/>
                         </button>
                         <button id={`delete${id}`}
-                            onClick={()=> {delRecord}}>
+                            onClick={props.showComponent}>
                             <FontAwesome name="trash-alt"/>
                         </button>
                     </span>
@@ -72,9 +69,7 @@ const HistoryList = (props) => {
 	return (
 
         <section className={`${styles.historyList} ${props.history} module out`}>
-
             <ul>{entryList()}</ul>
-                
         </section>
             
 	)

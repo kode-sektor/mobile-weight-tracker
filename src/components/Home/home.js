@@ -10,6 +10,7 @@ import History from '../History/History';
 import AddEntry from '../AddEntry/AddEntry';
 import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
+import EditEntry from '../EditEntry/EditEntry';
 
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseLoop} from '../../firebase';
@@ -26,9 +27,12 @@ class Layout extends Component {
 	state = {
 		initial : true,
 		showNav : false,
-		showPreferences : "no_slide",
-		showHistory : "no_slide",
-		showAddEntry : "no_slide", 
+		showPreferences : 'no_slide',
+		showHistory : 'no_slide',
+		showAddEntry : 'no_slide', 
+		editEntry : {
+			showEditEntry : 'no_slide'
+		},
 
 		target : {
 			weight : {
@@ -99,25 +103,28 @@ class Layout extends Component {
 
 	showComponent = (module) => {
 
-		// Close all slides
-		let modules = {
-			showNav : false,
-			showPreferences : "no_slide",
-			showHistory : "no_slide",
-			showAddEntry : "no_slide"
-		}
-
 		if (module) {
+			// Close all slides
+			let modules = {
+				showNav : false,
+				showPreferences : 'no_slide',
+				showHistory : 'no_slide',
+				showAddEntry : 'no_slide',
+				editEntry : {
+					showEditEntry : 'no_slide'
+				}
+			}
 			modules = {...modules, ...module};	// Toggle "slide"/"no_slide"
+
+			this.setState(modules);	
 		}
-		
-		this.setState(modules);
 	}
 
 	toggleComponent = (evt) => {
 
-		let element = '';
-		let action = '';
+		let element = '', action = '';
+
+		let edit = '';	// For handling 'edit' and 'del' actions
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
@@ -126,34 +133,55 @@ class Layout extends Component {
 		if ((evt === 'home') || (evt.currentTarget.className).indexOf("return") !== -1) {
 			element = 'return';
 		} else {
-			element = (evt.currentTarget.id);	// preferences, history
+			if (evt.currentTarget.id) {
+				if ((evt.currentTarget.id).substring(0,5) === 'edit-') {
+					element = 'edit';
+				} else if ((evt.currentTarget.id).substring(0,4) === 'del-') {
+					element = 'del';
+				} else {
+					element = evt.currentTarget.id;	// preferences, history
+				}
+			} else if (evt.target.id) {
+				element = evt.currentTarget.id;	// preferences, history
+			}
 		}
 
 		// Handle toggle functionality of each widget. Only one must show 
 		// while others remain hidden from view
 		switch (element) {
 			
-			case "nav" : 
+			case 'nav' : 
 				action = (this.state.showNav === false) ? true : false;
 				this.showComponent({showPreferences : action});
 			break;
 
-			case "preferences" : 
-				action = (this.state.showPreferences === "no_slide") ? "slide" : "no_slide";
+			case 'preferences' : 
+				action = (this.state.showPreferences === 'no_slide') ? 'slide' : 'no_slide';
 				this.showComponent({showPreferences : action});
 			break;
 
-			case "history" : 
-				action = (this.state.showHistory === "no_slide") ? "slide" : "no_slide";
+			case 'history' : 
+				action = (this.state.showHistory === 'no_slide') ? 'slide' : 'no_slide';
 				this.showComponent({showHistory : action});
 			break;
 			
-			case "addEntry" : 
-				action = (this.state.showAddEntry === "no_slide") ? "slide" : "no_slide";
+			case 'addEntry' : 
+				action = (this.state.showAddEntry === 'no_slide') ? 'slide' : 'no_slide';
 				this.showComponent({showAddEntry : action});
 			break;
+			
+			case 'del' : 
 
-			case "return" : 
+			case 'edit' : 
+				action = (this.state.editEntry.showEditEntry === 'no_slide') ? 'slide' : 'no_slide';
+				this.showComponent({
+					editEntry : {
+						showEditEntry : action
+					} 
+				});
+			break;
+
+			case 'return' : 
 				this.showComponent();
 			break;
 
@@ -180,22 +208,6 @@ class Layout extends Component {
 						title="Weight Overview"
 					/>
 
-					<Preferences preferences={this.state.showPreferences}/>
-
-					<History 
-						history={this.state.showHistory}
-						entries={this.state.entries}
-						kgOrIb={this.state.kgOrIb}/>
-
-					<AddEntry addEntry={this.state.showAddEntry}
-						entries={(this.state.entries).length}
-						showComponent={(evt) => this.toggleComponent(evt)}
-						showHome={() => this.toggleComponent('home')}
-						setInitial={()=>this.setInitial()}
-						entries={this.state.entries}
-						history={this.props.history}
-					/>
-
 					<WeightTrack 
 						target={this.state.target}
 						kgOrIb={this.state.kgOrIb}
@@ -205,9 +217,29 @@ class Layout extends Component {
 						entries={this.state.entries}
 						kgOrIb={this.state.kgOrIb}/>
 
-					<Footer
+					<Preferences 
+						preferences={this.state.showPreferences}/>
+
+					<History 
+						history={this.state.showHistory}
+						entries={this.state.entries}
+						kgOrIb={this.state.kgOrIb}
+						showComponent={(evt) => this.toggleComponent(evt)}/>
+
+					<AddEntry 
+						addEntry={this.state.showAddEntry}
+						entries={(this.state.entries).length}
 						showComponent={(evt) => this.toggleComponent(evt)}
-					/>
+						showHome={() => this.toggleComponent('home')}
+						setInitial={()=>this.setInitial()}
+						entries={this.state.entries}
+						history={this.props.history}/>
+
+					<EditEntry 
+						editEntry={this.state.editEntry.showEditEntry}/>
+
+					<Footer
+						showComponent={(evt) => this.toggleComponent(evt)}/>
 
 				</div>
 
