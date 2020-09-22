@@ -4,7 +4,7 @@ import styles from './WeightTrack.module.css';
 import FontAwesome from 'react-fontawesome';
 
 // DB
-import {firebaseTarget, firebaseWeight, firebaseLoop} from '../../firebase';
+import {firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
 
 class WeightTrack extends Component {
 
@@ -19,18 +19,30 @@ class WeightTrack extends Component {
         
         firebaseTarget.once('value').then(snapshot => {
             let targetSnapshot = snapshot;
-            let kgOrIb = snapshot.val().kgOrIb;
+            let initial = snapshot.val().initial
 
-            firebaseWeight.once('value').then(snapshot => {
-                let data = firebaseLoop(snapshot);
-                let currentWeight = data[0].weight[`${kgOrIb}`];
-
-                this.setState({
-                    kgOrIb, // 'kg' or 'ib'
-                    target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (180)
-                    entries : data,
-                    weight : Number(currentWeight)
-                });
+			firebaseKgOrIb.once('value').then((snapshot) => {	// Fetch weight unit
+                let kgOrIb = snapshot.val();
+                
+                if (!initial) { // User has set a target
+                    firebaseWeight.once('value').then(snapshot => {
+                        if (snapshot.val()) {   // Avoid error if user has entered target but not entered weight
+                            let data = firebaseLoop(snapshot);
+                            let currentWeight = data[0].weight[`${kgOrIb}`];    // Fetch most recent weight
+        
+                            this.setState({
+                                target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (180)
+                                entries : data,
+                                weight : Number(currentWeight)
+                            });
+                        }
+                    })
+                } else {
+                    this.setState({
+                        kgOrIb, // 'kg' or 'ib'
+                        target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (180)
+                    });
+                }
             })
         })
     }
@@ -42,7 +54,6 @@ class WeightTrack extends Component {
             case ('target') :   // User's set target weight
             
                 if (this.state.entries.length > 0) {
-
                     let kgOrIb = this.state.kgOrIb;
                     return (
                         <>{this.props.target.weight[`${kgOrIb}`]} {kgOrIb}</>
@@ -149,6 +160,10 @@ class WeightTrack extends Component {
                         }
                     }
 
+                    if (weightData.length === 0) {
+                        weightData.push(0); // Push 0 if user has not inserted weight for the week
+                    }
+
                     let maxWeight = (Math.max(...weightData));
                     let minWeight = (Math.min(...weightData));
 
@@ -172,20 +187,20 @@ class WeightTrack extends Component {
 
             case ('total') :    // Last record - First record
 
-            if ((this.state.entries).length > 0) {
-                
-                let entries = this.state.entries;
-                let kgOrIb = this.state.kgOrIb;
+                if ((this.state.entries).length > 0) {
+                    
+                    let entries = this.state.entries;
+                    let kgOrIb = this.state.kgOrIb;
 
-                let lastRecord = entries[0].weight[`${kgOrIb}`];
-                let firstRecord = entries[entries.length - 1].weight[`${kgOrIb}`];
+                    let lastRecord = entries[0].weight[`${kgOrIb}`];
+                    let firstRecord = entries[entries.length - 1].weight[`${kgOrIb}`];
 
-                let total = (lastRecord - firstRecord).toFixed(1);
+                    let total = (lastRecord - firstRecord).toFixed(1);
 
-                return(
-                    <>(<span>{total} {this.state.kgOrIb}</span>)</>
-                )
-            }
+                    return(
+                        <>(<span>{total} {this.state.kgOrIb}</span>)</>
+                    )
+                }
             break;
         }
     }
@@ -193,6 +208,7 @@ class WeightTrack extends Component {
     render () {
 
         // console.log(this.state);
+        // console.log(this.props);
         // console.log(this.props.target.weight.kg);
 
         return (

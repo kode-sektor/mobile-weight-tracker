@@ -3,7 +3,6 @@
     	{
     		"target" : [{
 				"initial" : true,
-				"kgOrIb" : "kg",
 				"weight" : {
 					"kg" : 180,
 					"ib" : 396.8
@@ -11,7 +10,8 @@
     		}],
     		"weight" : [{
 
-			}]
+			}],
+			"kgOrIb" : "kg"
     	}
         
     ]

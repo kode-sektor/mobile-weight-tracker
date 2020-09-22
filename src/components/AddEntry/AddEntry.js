@@ -10,14 +10,14 @@ import styles from './AddEntry.module.css';
 import {ibToKg} from '../../config';    // Kg-to-Ib factor
 
 // DB
-import {firebaseDB, firebaseTarget, firebaseWeight} from '../../firebase';
+import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb} from '../../firebase';
 
 class AddEntry extends React.Component {
 
     state = {
         initial : false,
         processForm : false,
-        kgOrIb: "kg",
+        kgOrIb: "kg",   // kg/ib Would be toggled by the select dropdown in form
         weight : {
             "kg" : 180,
             "ib" : 396.8
@@ -28,7 +28,15 @@ class AddEntry extends React.Component {
     componentWillMount = () => {
         firebaseTarget.once('value').then((snapshot) => {
             let initial = (snapshot.val()).initial;
-            this.setState({initial});
+
+            firebaseKgOrIb.once('value').then((snapshot) => {	// Fetch weight unit
+                let kgOrIb = snapshot.val();
+                
+                this.setState({
+                    initial,
+                    kgOrIb
+                });
+            })
         });
     }
    
@@ -84,7 +92,7 @@ class AddEntry extends React.Component {
         }
 
         const validate = (course) => {  // course of action: set weight or add entry
-            if (this.state.kgOrIb === "kg") {
+            if (this.props.kgOrIb === "kg") {
                 if (course < 1 || course === "") {  // Error for less than 1kg
                     alert(errorMsg + "above 0kg")
                 } else if (course.kg > 500 ) {  // Error for greater than 500kg
@@ -110,6 +118,8 @@ class AddEntry extends React.Component {
     }
    
     render() {
+
+        // console.log(this.props);
 
         return (
 

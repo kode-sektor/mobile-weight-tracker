@@ -31,11 +31,13 @@ const firebaseLoop = (snapshot) => {
 
 const firebaseTarget = firebaseDB.ref('user/0/target/0');
 const firebaseWeight = firebaseDB.ref('user/0/weight');
+const firebaseKgOrIb = firebaseDB.ref('user/0/kgOrIb');
 
 export {
     firebase,
     firebaseDB,
     firebaseTarget,
     firebaseWeight,
+    firebaseKgOrIb,
     firebaseLoop
 }

@@ -13,7 +13,7 @@ import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
 
 // DB
-import {firebaseDB, firebaseTarget, firebaseWeight, firebaseLoop} from '../../firebase';
+import {firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
 
 import styles from './home.module.css';
 
@@ -49,26 +49,34 @@ class Layout extends Component {
 		firebaseTarget.once('value').then((snapshot) => {
 			let initial = (snapshot.val()).initial;
 
-			// Initial is a check whether user is just beginning to use this application
-			// A new user has no weight entries yet. Check that before looping
-			if (!initial) {
-				firebaseTarget.once('value').then((snapshot) => {
-					let target = snapshot.val();
+			firebaseKgOrIb.once('value').then((snapshot) => {	// Fetch weight unit
+				let kgOrIb = snapshot.val();
 
-					firebaseWeight.once('value').then((snapshot) => {
-						let data = firebaseLoop(snapshot);
-						// console.log(data);
+				// Initial is a check whether user is just beginning to use this application
+				// A new user has no weight entries yet. Check that before looping
+				if (!initial) {
+					firebaseTarget.once('value').then((snapshot) => {
+						let target = snapshot.val();
 
-						if (data.length) {
-							this.setState({
-								initial,
-								target,
-								entries : data
-							});
-						}
+						let data = [];
+						firebaseWeight.once('value').then((snapshot) => {
+							if (snapshot.val()) {   // Avoid error if user has entered target but not entered weight
+								data = firebaseLoop(snapshot);
+								// console.log(data);
+							}
+
+							if (data.length) {
+								this.setState({
+									initial,
+									target,
+									kgOrIb,
+									entries : data
+								});
+							}
+						})
 					})
-				})
-			}
+				}
+			})
 		})
 	}
 
@@ -103,28 +111,33 @@ class Layout extends Component {
 
 	showComponent = (module) => {
 
-		if (module) {
-			// Close all slides
-			let modules = {
-				showNav : false,
-				showPreferences : 'no_slide',
-				showHistory : 'no_slide',
-				showAddEntry : 'no_slide',
-				editEntry : {
-					showEditEntry : 'no_slide'
-				}
+		// Close all slides
+		let modules = {
+			showNav : false,
+			showPreferences : 'no_slide',
+			showHistory : 'no_slide',
+			showAddEntry : 'no_slide',
+			editEntry : {
+				showEditEntry : 'no_slide',
+				recordID : ''
 			}
-			modules = {...modules, ...module};	// Toggle "slide"/"no_slide"
-
-			this.setState(modules);	
 		}
+
+		if (module) {
+			modules = {...modules, ...module};	// Toggle "slide"/"no_slide"
+		}
+
+		// If no module is passed, all defaults of 'no_slide' will be passed 
+		// which will close all the slides
+		console.log(modules);
+		this.setState(modules);	
 	}
 
 	toggleComponent = (evt) => {
 
 		let element = '', action = '';
 
-		let edit = '';	// For handling 'edit' and 'del' actions
+		let edit = '', recordID='';	// For handling 'edit' and 'del' actions
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
@@ -136,8 +149,10 @@ class Layout extends Component {
 			if (evt.currentTarget.id) {
 				if ((evt.currentTarget.id).substring(0,5) === 'edit-') {
 					element = 'edit';
+					recordID = (evt.currentTarget.id).split('-')[1];	// edit-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
 				} else if ((evt.currentTarget.id).substring(0,4) === 'del-') {
 					element = 'del';
+					recordID = (evt.currentTarget.id).split('-')[1];	// del-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
 				} else {
 					element = evt.currentTarget.id;	// preferences, history
 				}
@@ -176,7 +191,8 @@ class Layout extends Component {
 				action = (this.state.editEntry.showEditEntry === 'no_slide') ? 'slide' : 'no_slide';
 				this.showComponent({
 					editEntry : {
-						showEditEntry : action
+						showEditEntry : action,
+						recordID
 					} 
 				});
 			break;
@@ -233,10 +249,13 @@ class Layout extends Component {
 						showHome={() => this.toggleComponent('home')}
 						setInitial={()=>this.setInitial()}
 						entries={this.state.entries}
-						history={this.props.history}/>
+						history={this.props.history}
+						kgOrIb={this.state.kgOrIb}/>
 
 					<EditEntry 
-						editEntry={this.state.editEntry.showEditEntry}/>
+						editEntry={this.state.editEntry.showEditEntry}
+						showComponent={(evt) => this.toggleComponent(evt)}
+						recordID={this.state.recordID}/>
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}/>
