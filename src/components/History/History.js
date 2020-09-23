@@ -70,6 +70,16 @@ const HistoryList = (props) => {
 
         <section className={`${styles.historyList} ${props.history} module out`}>
             <ul>{entryList()}</ul>
+            <section className={`${styles.navPane} buttonset`}>
+                <button type="button" id="prevbtn" className={styles.navbtn}
+                    onClick = {()=> {}}>
+                    PREV
+                </button>
+                <button type="button" id="nextbtn" className={styles.navbtn}
+                    onClick = {()=> {}}>
+                    NEXT
+                </button>
+            </section>
         </section>
             
 	)

@@ -210,8 +210,10 @@ class Layout extends Component {
 						console.log(e)
 					})
 				}
-
 				delRecord();
+				action = (this.state.showHistory === 'no_slide') ? 'slide' : 'no_slide';	// Stay on History Page
+				this.showComponent({showHistory : action});
+
 			break;
 
 			case 'edit' : 
