@@ -12,10 +12,12 @@ import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
 
+import styles from './home.module.css';
+
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
 
-import styles from './home.module.css';
+import {perPage, paginationFactor} from '../../config';
 
 class Layout extends Component {
 
@@ -50,7 +52,13 @@ class Layout extends Component {
 			}
 		},
 		kgOrIb : "kg",
-		entries : []
+		entries : [],
+
+		paginate : {
+			state : false,
+			entries : [],
+			factor : paginationFactor
+		}
 	}
 
 	componentWillMount() {
@@ -74,12 +82,29 @@ class Layout extends Component {
 								// console.log(data);
 							}
 
+							// Handle paginate disabled buttons 
+
+							let entries = data.slice(0, perPage);
+
+							if (entries.length > 0) {
+								let entryListLength = entries.length; 
+
+								if ((entryListLength > 0) && (entryListLength < perPage)) {
+			
+								}
+							}
+
 							if (data.length) {
 								this.setState({
 									initial,
 									target,
 									kgOrIb,
-									entries : data
+									entries : data,
+
+									paginate : {
+										...this.state.paginate,
+										entries
+									}
 								});
 							}
 						})
@@ -153,7 +178,7 @@ class Layout extends Component {
 
 		let element = '', action = '';
 
-		let edit = '', recordID='';	// For handling 'edit' and 'del' actions
+		let edit = '', paginateID = '', recordID='';	// For handling 'edit' and 'del' actions
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
@@ -169,6 +194,9 @@ class Layout extends Component {
 				} else if ((evt.currentTarget.id).substring(0,4) === 'del-') {
 					element = 'del';
 					recordID = (evt.currentTarget.id).split('del-')[1];	// del-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
+				} else if ((evt.currentTarget.id).substring(0,9) === 'paginate-') {
+					element = 'paginate';
+					paginateID = (evt.currentTarget.id).split('paginate-')[1];	// prev or next
 				} else {
 					element = evt.currentTarget.id;	// preferences, history
 				}
@@ -224,10 +252,9 @@ class Layout extends Component {
 				const fetchRecord = () => {
 
 					let val = '', unit = this.state.kgOrIb;
-					console.log(recordID);
+
 					firebaseDB.ref('user/0/weight/-' + recordID).once('value').then((snapshot) => {
 						val = snapshot.val();
-						console.log(val);
 						
 						let weightKG = val.weight.kg;	// 178.2
 						let weightIB = val.weight.ib;
@@ -252,6 +279,28 @@ class Layout extends Component {
 				}
 
 				fetchRecord();
+			break;
+
+			case 'paginate' : 
+
+				// Handle clicking of pagination buttons
+				let entries = this.state.paginate.entries;
+
+				if (entries.length > 0) {
+					
+					let id = paginateID;
+					let factor = this.state.paginate.factor;
+
+					(id === "next") ? factor++ : factor--;
+
+					this.setState({
+						paginate : {
+							...this.state.paginate, 
+							factor
+						}
+					})
+				}
+
 			break;
 
 			case 'return' : 
@@ -297,7 +346,8 @@ class Layout extends Component {
 						history={this.state.showHistory}
 						entries={this.state.entries}
 						kgOrIb={this.state.kgOrIb}
-						showComponent={(evt) => this.toggleComponent(evt)}/>
+						showComponent={(evt) => this.toggleComponent(evt)}
+						paginate={this.state.paginate}/>
 
 					<AddEntry 
 						addEntry={this.state.showAddEntry}

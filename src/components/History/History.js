@@ -13,7 +13,7 @@ const HistoryList = (props) => {
         let date = '', day = '', month = '', year = '', deltaChange = 'caret-up',
             formattedDate = '', weight = '', weightDiff = 0, id = '';
 
-        const entryHTML = props.entries.map((item, index) => {
+        const entryHTML = props.paginate.entries.map((item, index) => {
 
             id = item.id;
             date = item.date;
@@ -65,18 +65,18 @@ const HistoryList = (props) => {
 
         return entryHTML;
     }
-    
+
 	return (
 
         <section className={`${styles.historyList} ${props.history} module out`}>
             <ul>{entryList()}</ul>
             <section className={`${styles.navPane} buttonset`}>
-                <button type="button" id="prevbtn" className={styles.navbtn}
-                    onClick = {()=> {}}>
+                <button type="button" id="paginate-prev" className={`${styles.navbtn}`} disabled={props.paginate.state}
+                    onClick = {props.showComponent}>
                     PREV
                 </button>
-                <button type="button" id="nextbtn" className={styles.navbtn}
-                    onClick = {()=> {}}>
+                <button type="button" id="paginate-next" className={`${styles.navbtn}`} disabled={props.paginate.state}
+                    onClick = {props.showComponent}>
                     NEXT
                 </button>
             </section>
