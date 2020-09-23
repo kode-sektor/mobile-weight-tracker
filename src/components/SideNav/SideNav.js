@@ -27,7 +27,8 @@ const SideNavigation = (props) => {
 
 					<ul className={styles.menu_links}>
 						<li>
-							<Link to="" className="">
+							<Link id="rate-us" to="" className=""
+								onClick={props.showComponent}>
 								Rate Us
 							</Link>
 						</li>

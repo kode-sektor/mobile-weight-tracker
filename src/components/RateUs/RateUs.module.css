@@ -1,0 +1,23 @@
+.rateUs {
+    background-color: #fff !important;
+}
+.rateUsList {
+    display: flex;
+    flex-flow: column;
+    height : 85%;
+}
+.rateUsList > li {
+    text-align: center; 
+    padding: 5px;
+    border-bottom: thin solid rgba(0,0,0,.1);
+}
+.rateUsList > li > button {
+    width: 100%;
+    padding: 10px;
+}
+.rateUsList > li:last-child {
+    border-bottom: none;
+}
+.rateUsList .smiley {
+    font-size: 3em;
+}

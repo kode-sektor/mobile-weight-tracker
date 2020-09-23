@@ -11,8 +11,7 @@ import AddEntry from '../AddEntry/AddEntry';
 import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
-
-import styles from './home.module.css';
+import RateUs from '../RateUs/RateUs';
 
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
@@ -44,6 +43,8 @@ class Layout extends Component {
 				date : ''
 			}
 		},
+		showRateUs : 'no_slide',
+		rated : 'Rate Code Sector\'s app',
 
 		target : {
 			weight : {
@@ -55,7 +56,8 @@ class Layout extends Component {
 		entries : [],
 
 		paginate : {
-			state : false,
+			statePrev : false,
+			stateNext : false,
 			entries : [],
 			factor : paginationFactor,
 			perPage : perPage
@@ -83,15 +85,23 @@ class Layout extends Component {
 								// console.log(data);
 							}
 
-							// Handle paginate disabled buttons 
+							// HANDLE PAGINATE DISABLED BUTTONS
 
-							let entries = data.slice(0, perPage);
+							let entries = data.slice(0, perPage);	// Slice first 10 entries
+
+							// Check to disable button
+							let statePrev = false, stateNext = false;
+							let factor = paginationFactor;
 
 							if (entries.length > 0) {
-								let entryListLength = entries.length; 
 
-								if ((entryListLength > 0) && (entryListLength < perPage)) {
-			
+								if (factor === 0) {	// Disable Prev on first load
+									statePrev = true
+								}
+								// The - 1 at the end accounts for the fact that factor begins from 0 but 
+								// the length of an array is not 0-based
+								if (factor === Math.floor((this.state.entries).length / perPage ) - 1) {	// Disable Next on last possible fetch record
+									stateNext = true
 								}
 							}
 
@@ -104,6 +114,8 @@ class Layout extends Component {
 
 									paginate : {
 										...this.state.paginate,
+										statePrev,
+										stateNext,
 										entries
 									}
 								});
@@ -163,6 +175,7 @@ class Layout extends Component {
 					date : ''
 				}
 			},
+			showRateUs : 'no_slide',
 		}
 
 		if (module) {
@@ -183,7 +196,7 @@ class Layout extends Component {
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
-		// override the ID because it is dedicated to close all panels
+		// override the ID because it is dedicated for closing all panels
 
 		if ((evt === 'home') || (evt.currentTarget.className).indexOf("return") !== -1) {
 			element = 'return';
@@ -288,32 +301,43 @@ class Layout extends Component {
 				let paginatedEntries = this.state.paginate.entries;
 				let perPage = this.state.paginate.perPage;
 				let factor = this.state.paginate.factor;
+				let statePrev = false, stateNext = false;
 
 				if (paginatedEntries.length > 0) {
 
 					let id = paginateID;
 
 					(id === "next") ? factor++ : factor--;	// Increment / decrement pagination factor
+					
+					// Check to disable button
+					if (factor === 0) {	// Disable Prev on first load
+						statePrev = true
+					}
+					// The - 1 at the end accounts for the fact that factor begins from 0 but 
+					// the length of an array is not 0-based
+					if (factor === Math.floor((this.state.entries).length / perPage ) - 1) {	// Disable Next on last possible fetch record
+						stateNext = true
+					}
 
 					// Reslice the array
-					console.log(factor * perPage, (factor + 1) * perPage);
-					console.log(factor * perPage, (factor - 1)  * perPage);
-					
 					paginatedEntries = this.state.entries.slice(factor * perPage, (factor + 1) * perPage);	// 0, 10;  10, 20 etc. 
 
-					console.log(this.state.entries);
 					this.setState({
 						paginate : {
 							...this.state.paginate, 
+							statePrev,
+							stateNext,
 							factor,
 							entries : paginatedEntries,
-
 						}
 					})
-
-					console.log(this.state);
 				}
 
+			break;
+
+			case 'rate-us' : 
+				action = (this.state.showRateUs === 'no_slide') ? 'slide' : 'no_slide';
+				this.showComponent({showRateUs : action});
 			break;
 
 			case 'return' : 
@@ -322,6 +346,16 @@ class Layout extends Component {
 
 			default : ;
 		}
+	}
+
+	rateApp = () => {
+		this.setState({
+			rated : 'Thanks for your rating 🤙'
+		})
+
+		setTimeout(()=> {
+			window.location.reload();
+		}, 2000);
 	}
 
 	render () {
@@ -340,6 +374,7 @@ class Layout extends Component {
 						showNav={this.state.showNav}
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
+						showComponent={(evt) => this.toggleComponent(evt)}
 						title="Weight Overview"
 					/>
 
@@ -377,6 +412,12 @@ class Layout extends Component {
 						editEntry={this.state.editEntry}
 						showComponent={(evt) => this.toggleComponent(evt)}
 						kgOrIb={this.state.kgOrIb}/>
+
+					<RateUs
+						showRateUs={this.state.showRateUs}
+						showComponent={(evt) => this.toggleComponent(evt)}
+						rated={this.state.rated}
+						rateApp={() => this.rateApp()}/>
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}/>

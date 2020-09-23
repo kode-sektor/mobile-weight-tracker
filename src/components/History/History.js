@@ -66,18 +66,16 @@ const HistoryList = (props) => {
         return entryHTML;
     }
 
-    console.log(props)
-
 	return (
 
         <section className={`${styles.historyList} ${props.history} module out`}>
             <ul>{entryList()}</ul>
             <section className={`${styles.navPane} buttonset`}>
-                <button type="button" id="paginate-prev" className={`${styles.navbtn}`} disabled={props.paginate.state}
+                <button type="button" id="paginate-prev" className={`${styles.navbtn}`} disabled={props.paginate.statePrev}
                     onClick = {props.showComponent}>
                     PREV
                 </button>
-                <button type="button" id="paginate-next" className={`${styles.navbtn}`} disabled={props.paginate.state}
+                <button type="button" id="paginate-next" className={`${styles.navbtn}`} disabled={props.paginate.stateNext}
                     onClick = {props.showComponent}>
                     NEXT
                 </button>
