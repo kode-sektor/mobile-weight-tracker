@@ -54,7 +54,7 @@ const HistoryList = (props) => {
                             onClick={props.showComponent}>
                             <FontAwesome name="pen"/>
                         </button>
-                        <button id={`delete${id}`}
+                        <button id={`del${id}`}
                             onClick={props.showComponent}>
                             <FontAwesome name="trash-alt"/>
                         </button>

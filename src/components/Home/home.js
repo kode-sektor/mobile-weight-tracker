@@ -165,10 +165,10 @@ class Layout extends Component {
 			if (evt.currentTarget.id) {
 				if ((evt.currentTarget.id).substring(0,5) === 'edit-') {
 					element = 'edit';
-					recordID = (evt.currentTarget.id).split('-')[1];	// edit-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
+					recordID = (evt.currentTarget.id).split('edit-')[1];	// edit-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
 				} else if ((evt.currentTarget.id).substring(0,4) === 'del-') {
 					element = 'del';
-					recordID = (evt.currentTarget.id).split('-')[1];	// del-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
+					recordID = (evt.currentTarget.id).split('del-')[1];	// del-MHdBmBUtWWM4A7qo3At to 'MHdBmBUtWWM4A7qo3At'
 				} else {
 					element = evt.currentTarget.id;	// preferences, history
 				}
@@ -203,16 +203,29 @@ class Layout extends Component {
 			
 			case 'del' : 
 
+				// Fetch record for particular 
+				const delRecord = () => {
+
+					firebaseDB.ref('user/0/weight/-' + recordID).remove().catch((e) => {
+						console.log(e)
+					})
+				}
+
+				delRecord();
+			break;
+
 			case 'edit' : 
+
 				action = (this.state.editEntry.showEditEntry === 'no_slide') ? 'slide' : 'no_slide';
 
 				// Fetch record for particular 
 				const fetchRecord = () => {
 
 					let val = '', unit = this.state.kgOrIb;
-			
+					console.log(recordID);
 					firebaseDB.ref('user/0/weight/-' + recordID).once('value').then((snapshot) => {
 						val = snapshot.val();
+						console.log(val);
 						
 						let weightKG = val.weight.kg;	// 178.2
 						let weightIB = val.weight.ib;
@@ -240,7 +253,7 @@ class Layout extends Component {
 			break;
 
 			case 'return' : 
-				this.showComponent();
+				this.showComponent();	// Hide all other components. Home is always underneath, so it shows
 			break;
 
 			default : ;
