@@ -46,7 +46,7 @@ const HistoryList = (props) => {
                         {weight + props.kgOrIb}
                     </span>
                     <strong className={styles.history_weight_diff}>
-                        {(weightDiff === '') ? '' : <span><FontAwesome name={deltaChange} /> </span> }
+                        {(weightDiff === '') ? '' : <span><FontAwesome name={deltaChange} /> </span> }  {/*Last record*/}
                         <span className="">{weightDiff}</span>
                     </strong>
                     <span className={styles.amend_entry}>

@@ -62,7 +62,10 @@ class AddEntry extends React.Component {
             if (setTargetOrAddRecord === "setTarget") { // Set Target
                 firebaseTarget.update({
                     'initial' : false,
-                    'weight' : this.state.weight
+                    'weight' : {
+                        kg : Number(this.state.weight.kg),
+                        ib : Number(this.state.weight.ib)
+                    }
                 }).then(() => {
                     this.props.setInitial();    // Set initial for home page
                     this.setState({initial: false});    // Do the same but for this page
@@ -71,7 +74,10 @@ class AddEntry extends React.Component {
             } else {
                 const entry = { // Upload new weight entry
                     'date' : this.state.startDate,
-                    'weight' : Number(this.state.weight)
+                    'weight' : {
+                        kg : Number(this.state.weight.kg),
+                        ib : Number(this.state.weight.ib)
+                    }
                 }
 
                 // Ensure user's uploaded entries do not exceed 50
@@ -98,7 +104,7 @@ class AddEntry extends React.Component {
                 } else if (course.kg > 500 ) {  // Error for greater than 500kg
                     alert (errorMsg + "under 500kg")
                 } else {
-                    this.setState({processForm : true});    // Upload form data if no error
+                    // this.setState({processForm : true});    // Upload form data if no error
                     upload();
                 }
             } else {    // Ib
@@ -107,14 +113,13 @@ class AddEntry extends React.Component {
                 } else if (course > (500/course.ib).toFixed(1)) {  // Error for greater than 500kg
                     alert (errorMsg + "under " + (500/ibToKg).toFixed(1))
                 } else {
-                    this.setState({processForm : true});    // Upload form data if no error
+                    // this.setState({processForm : true});    // Upload form data if no error
                     upload();
                 }
             }
         }
 
-        validate(this.state.weight);
-        
+        validate(this.state.weight[`${this.state.kgOrIb}`]);
     }
    
     render() {

@@ -16,18 +16,103 @@ class AddEntry extends React.Component {
 
     state = {
         initial : false,
-        processForm : false,
         kgOrIb: "kg",
         weight : {
-            "kg" : 180,
-            "ib" : 396.8
+            "kg" : this.props.editEntry.record.weight.kg,
+            "ib" : this.props.editEntry.record.weight.ib
         },
-        weight : '',
+        startDate : this.props.editEntry.record.date
+    }
+
+    selectDate = (date) => {
+        // date uses the exact JAVASCRIPT DATE object.
+        let time = date.getTime();
+        
+        this.setState({
+          startDate: time
+        });
+    };
+
+    saveEntry = () => {
+
+        let errorMsg = "Please set weight ";
+
+        // Check whether user is setting weight target or adding weight entry
+        let setTargetOrAddRecord = this.props.initial === true ? "setTarget" : "addRecord";
+        let id = this.props.editEntry.record.weight.id;
+
+        // weight and date 
+        // weight and startDate have values from props but props is empty on first load. But props cant be used directly
+        // because onChange/onKeyup event on each of the fields inserts the field's value into the state. 
+        // Thus use the props if user makes no change in the fields but if he does, then the dynamic state values 
+        // can safely and must be used because it tracks the changes.
+        
+        let weightKG = (this.state.weight.kg|| this.props.editEntry.record.weight.kg);
+        let weightIB = (this.state.weight.ib || this.props.editEntry.record.weight.ib);
+        let date = (this.state.startDate || this.props.editEntry.record.date);
+
+        // Upload to firebase 
+        const upload = () => {          
+            
+            if (setTargetOrAddRecord === "setTarget") { // Set Target
+                firebaseTarget.update({
+                    'initial' : false,
+                    'weight' : {
+                        kg : Number(weightKG),
+                        ib : Number(weightIB)
+                    }
+                }).then(() => {
+                    this.props.setInitial();    // Set initial for home page
+                    this.setState({initial: false});    // Do the same but for this page
+                    window.location.reload();
+                });
+            } else {
+                const entry = { // Upload new weight entry
+                    'date' : (this.state.startDate || this.props.editEntry.record.date),
+                    'weight' : {
+                        kg : Number(weightKG),
+                        ib : Number(weightIB)
+                    }
+                }
+
+                firebaseDB.ref('user/0/weight/-' + id).update(entry);
+            }
+
+            // this.props.showHome() // Return to home after form submission
+           window.location.reload();
+        }
+
+        const validate = (course) => {  // course of action: set weight or add entry
+
+            if (this.props.kgOrIb === "kg") {
+                if (course < 1 || course === "") {  // Error for less than 1kg
+                    alert(errorMsg + "above 0kg")
+                } else if (course.kg > 500 ) {  // Error for greater than 500kg
+                    alert (errorMsg + "under 500kg")
+                } else {
+                    this.setState({processForm : true});    // Upload form data if no error
+                    upload();
+                }
+            } else {    // Ib
+                if (course < 1 || course === "") {  // Error for less than 1kg
+                    alert(errorMsg + "above 0Ib")
+                } else if (course > (500/course.ib).toFixed(1)) {  // Error for greater than 500kg
+                    alert (errorMsg + "under " + (500/ibToKg).toFixed(1))
+                } else {
+                    this.setState({processForm : true});    // Upload form data if no error
+                    upload();
+                }
+            }
+        }
+        
+        if (this.props.editEntry.record.weight) {
+            validate(this.state.weight[`${this.state.kgOrIb}`]);
+        }    
     }
    
-    render() {
+    render () {
 
-        console.log(this.props);
+        console.log(this.props, this.state);
 
         return (
 
@@ -42,7 +127,7 @@ class AddEntry extends React.Component {
 
                         <div className="form-group">
                             <input type="number" className="target-entry" id="weight" autoComplete="off" placeholder="Target" max="1000" min="1" name="weight" autoFocus    
-                                defaultValue={this.props.editEntry.record.weight}
+                                defaultValue={this.props.editEntry.record.weight[`${this.props.kgOrIb}`]}
                                 onChange={({ target: { value } }) => { 
                                     if (this.state.kgOrIb === 'kg') {
                                         this.setState({weight : {

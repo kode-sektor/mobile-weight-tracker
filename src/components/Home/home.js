@@ -34,7 +34,11 @@ class Layout extends Component {
 		editEntry : {
 			showEditEntry : 'no_slide',
 			record : {	// Record for single 
-				weight : '',
+				weight : {
+					kg : '',
+					ib : '',
+					recordID : ''
+				},
 				date : ''
 			}
 		},
@@ -125,7 +129,11 @@ class Layout extends Component {
 			editEntry : {
 				showEditEntry : 'no_slide',
 				record : {	// Record for single 
-					weight : '',
+					weight : {
+						kg : '',
+						ib : '',
+						recordID : ''
+					},
 					date : ''
 				}
 			},
@@ -206,16 +214,21 @@ class Layout extends Component {
 					firebaseDB.ref('user/0/weight/-' + recordID).once('value').then((snapshot) => {
 						val = snapshot.val();
 						
-						let weight = val.weight[`${unit}`];	// 178.2
+						let weightKG = val.weight.kg;	// 178.2
+						let weightIB = val.weight.ib;
 						let date = val.date;	// 1598933775000
 						
-						console.log(weight, date);
+						// console.log(weightKG, weightIB, date);
 
 						this.showComponent({
 							editEntry : {
 								showEditEntry : action,
 								record : {
-									weight : weight,
+									weight : {
+										kg : weightKG,
+										ib : weightIB,
+										id : recordID
+									},
 									date : date
 								}
 							} 
@@ -282,6 +295,7 @@ class Layout extends Component {
 						kgOrIb={this.state.kgOrIb}/>
 
 					<EditEntry 
+						initial={this.state.initial}
 						editEntry={this.state.editEntry}
 						showComponent={(evt) => this.toggleComponent(evt)}
 						kgOrIb={this.state.kgOrIb}/>
