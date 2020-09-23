@@ -57,7 +57,8 @@ class Layout extends Component {
 		paginate : {
 			state : false,
 			entries : [],
-			factor : paginationFactor
+			factor : paginationFactor,
+			perPage : perPage
 		}
 	}
 
@@ -284,21 +285,33 @@ class Layout extends Component {
 			case 'paginate' : 
 
 				// Handle clicking of pagination buttons
-				let entries = this.state.paginate.entries;
+				let paginatedEntries = this.state.paginate.entries;
+				let perPage = this.state.paginate.perPage;
+				let factor = this.state.paginate.factor;
 
-				if (entries.length > 0) {
-					
+				if (paginatedEntries.length > 0) {
+
 					let id = paginateID;
-					let factor = this.state.paginate.factor;
 
-					(id === "next") ? factor++ : factor--;
+					(id === "next") ? factor++ : factor--;	// Increment / decrement pagination factor
 
+					// Reslice the array
+					console.log(factor * perPage, (factor + 1) * perPage);
+					console.log(factor * perPage, (factor - 1)  * perPage);
+					
+					paginatedEntries = this.state.entries.slice(factor * perPage, (factor + 1) * perPage);	// 0, 10;  10, 20 etc. 
+
+					console.log(this.state.entries);
 					this.setState({
 						paginate : {
 							...this.state.paginate, 
-							factor
+							factor,
+							entries : paginatedEntries,
+
 						}
 					})
+
+					console.log(this.state);
 				}
 
 			break;

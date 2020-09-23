@@ -26,8 +26,8 @@ const HistoryList = (props) => {
             weight = item.weight[`${props.kgOrIb}`];
 
             // Calculate difference in weight between subsequent records
-            if (index < props.entries.length - 1) {    // Avoid throwing error for last entry
-                weightDiff = Number(props.entries[index].weight[`${props.kgOrIb}`]) - Number(props.entries[index + 1].weight[`${props.kgOrIb}`]);
+            if (index < props.paginate.entries.length - 1) {    // Avoid throwing error for last entry
+                weightDiff = Number(props.paginate.entries[index].weight[`${props.kgOrIb}`]) - Number(props.paginate.entries[index + 1].weight[`${props.kgOrIb}`]);
                 weightDiff = weightDiff.toFixed(1);
                 
                 deltaChange = (weightDiff.indexOf('-') ? 'caret-up' : 'caret-down');
@@ -65,6 +65,8 @@ const HistoryList = (props) => {
 
         return entryHTML;
     }
+
+    console.log(props)
 
 	return (
 
