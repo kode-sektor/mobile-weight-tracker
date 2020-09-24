@@ -1,3 +1,9 @@
+@media (min-width: 0) {
+    .animated-profile {
+        display: none;
+    }
+}
+
 @media (min-width: 480px) {
     .layout {
         background: url('images/iphone.png') no-repeat center #fff;
@@ -5,7 +11,54 @@
 }
 
 @media (min-width: 768px) {
+    .animated-profile {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    .animated-profile:before, .copyright {
+        content: "";
+        position: absolute;
+        left: 5%;
+        top: 20%;
+        width: 25%;
+        height: 20%;
+        background: rgba(255,255,255,.3);
+        z-index: 2;
+    }
+    .copyright {
+        top: 60%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        text-transform: uppercase;
+        text-align: center;
+        color: #fff;
+    }
+    .copyright span {
+        font-weight: bolder;
+    }
+    .profile {
+        position: absolute;
+        right: 0;
+        top: 20%;
+        bottom: 20%;
+        width: 50%;
+        background: rgba(255,255,255,.3);
+    }
+    .profile-img {
+        position: absolute;
+        left: -160px;
+    }
 
+    /*Animation*/
 }
 
 @media (min-width: 992px) {

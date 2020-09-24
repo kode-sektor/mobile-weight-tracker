@@ -13,6 +13,7 @@ const HistoryList = (props) => {
         let date = '', day = '', month = '', year = '', deltaChange = 'caret-up',
             formattedDate = '', weight = '', weightDiff = 0, id = '';
 
+        // props.paginate.entries is the sliced 10-member array from the original total fetched records (50)
         const entryHTML = props.paginate.entries.map((item, index) => {
 
             id = item.id;
@@ -34,7 +35,9 @@ const HistoryList = (props) => {
 
                 weightDiff = weightDiff.replace('-', '') + props.kgOrIb;  // -2.0kg to 2.0kg
             } else {
-                weightDiff = '';    // Override with empty value for last record
+                if (props.paginate.stateNext) {
+                    weightDiff = '';    // Override with empty value for last record on the last page
+                }
             }
 
             return (
