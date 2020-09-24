@@ -7,8 +7,6 @@ import styles from './RateUs.module.css';
 
 const RateUs = (props) => {
 
-    console.log(props)
-
 	return (
         <section className={`${styles.rateUs} ${props.showRateUs} module`}>
             

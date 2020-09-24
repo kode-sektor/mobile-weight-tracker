@@ -12,6 +12,7 @@ import WeightTrack from '../WeightTrack/WeightTrack';
 import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
 import RateUs from '../RateUs/RateUs';
+import ShareApp from '../ShareApp/ShareApp';
 
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
@@ -46,6 +47,8 @@ class Layout extends Component {
 		showRateUs : 'no_slide',
 		rated : 'Rate Code Sector\'s app',
 
+		showShareApp : 'no_slide',
+
 		target : {
 			weight : {
 				kg : '',
@@ -54,6 +57,12 @@ class Layout extends Component {
 		},
 		kgOrIb : "kg",
 		entries : [],
+		
+		// Fake URLs
+		socials : {
+			whatsapp : encodeURI("https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en"),
+			twitter : encodeURI("Check out my Weight Tracker app at: https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en"),
+		},
 
 		paginate : {
 			statePrev : false,
@@ -176,6 +185,7 @@ class Layout extends Component {
 				}
 			},
 			showRateUs : 'no_slide',
+			showShareApp : 'no_slide',
 		}
 
 		if (module) {
@@ -340,6 +350,11 @@ class Layout extends Component {
 				this.showComponent({showRateUs : action});
 			break;
 
+			case 'share-app' : 
+				action = (this.state.showShareApp === 'no_slide') ? 'slide' : 'no_slide';
+				this.showComponent({showShareApp : action});
+			break;
+
 			case 'return' : 
 				this.showComponent();	// Hide all other components. Home is always underneath, so it shows
 			break;
@@ -418,6 +433,12 @@ class Layout extends Component {
 						showComponent={(evt) => this.toggleComponent(evt)}
 						rated={this.state.rated}
 						rateApp={() => this.rateApp()}/>
+
+					<ShareApp
+						showShareApp={this.state.showShareApp}
+						socials={this.state.socials}
+						showComponent={(evt) => this.toggleComponent(evt)}
+						/>						
 
 					<Footer
 						showComponent={(evt) => this.toggleComponent(evt)}/>

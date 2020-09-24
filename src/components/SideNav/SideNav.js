@@ -33,7 +33,8 @@ const SideNavigation = (props) => {
 							</Link>
 						</li>
 						<li>
-							<Link to="" className="">
+							<Link id="share-app" to="" className=""
+								onClick={props.showComponent}>
 								Share
 							</Link>
 						</li>
