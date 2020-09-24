@@ -39,14 +39,14 @@ const SideNavigation = (props) => {
 							</Link>
 						</li>
 						<li>
-							<Link to="" className="">
+							<a rel="external" target="_blank" href="https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en" className="">
 								Write Review
-							</Link>
+							</a>
 						</li>
 						<li>
-							<Link to="" className="">
+							<a rel="external" target="_blank" href="https://play.google.com/store/search?q=weight&c=apps&hl=en" className="">
 								More Apps
-							</Link>
+							</a>
 						</li>
 						<li>
 							<Link to="" className="">
