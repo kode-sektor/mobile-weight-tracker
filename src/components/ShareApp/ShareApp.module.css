@@ -1,0 +1,42 @@
+.rateUs {
+    background-color: #fff !important;
+}
+.sharePlatforms {
+    display: flex;
+    flex-flow: column;
+    height : 85%;
+}
+.sharePlatforms > li.whatsapp, .sharePlatforms > li.twitter {
+    text-align: center; 
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    padding: 0 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-family: Helvetica, Arial, sans-serif;
+}
+.sharePlatforms > li > .facebook {
+    width: 100%;
+    text-align: center;
+}
+.sharePlatforms > li > .facebook * {
+    width: 100%;
+}
+.sharePlatforms > li > .facebook .inlineBlock {
+    width: 100%;
+}
+.sharePlatforms > li.whatsapp a, .sharePlatforms > li.twitter a {
+    display: block;
+    line-height: 38px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    font-family:  Helvetica, Arial, sans-serif;
+}
+.sharePlatforms > li.whatsapp { 
+    background: #25D366;
+}
+.sharePlatforms > li.twitter { 
+    background: rgb(29, 161, 242);
+}
