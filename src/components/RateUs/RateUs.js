@@ -32,6 +32,11 @@ const RateUs = (props) => {
                     </button>
                 </li>
             </ul>
+            
+            <button className="return secondary"
+                onClick={props.showComponent}>
+                Return
+            </button>
         </section>
 	)
 }

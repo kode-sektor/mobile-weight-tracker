@@ -45,8 +45,7 @@ class Layout extends Component {
 			}
 		},
 		showRateUs : 'no_slide',
-		rated : 'Rate Code Sector\'s app',
-
+		rated : "Rate Code Sector's app",
 		showShareApp : 'no_slide',
 
 		target : {
@@ -161,7 +160,7 @@ class Layout extends Component {
 
 	toggleSidenav = (action) => {		
 		this.setState({
-			showNav : action
+			showNav : action,
 		})
 	}
 
@@ -347,12 +346,16 @@ class Layout extends Component {
 
 			case 'rate-us' : 
 				action = (this.state.showRateUs === 'no_slide') ? 'slide' : 'no_slide';
-				this.showComponent({showRateUs : action});
+				this.showComponent({ 
+					showRateUs : action,
+				});
 			break;
 
 			case 'share-app' : 
 				action = (this.state.showShareApp === 'no_slide') ? 'slide' : 'no_slide';
-				this.showComponent({showShareApp : action});
+				this.showComponent({ 
+					showShareApp : action,
+				});
 			break;
 
 			case 'return' : 
@@ -374,6 +377,8 @@ class Layout extends Component {
 	}
 
 	render () {
+
+		console.log(this.state);
 
 		return (
 

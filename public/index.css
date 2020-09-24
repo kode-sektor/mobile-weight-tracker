@@ -348,6 +348,26 @@ button.return {
     background: #fff;
     color:var(--blue);
 }
+button.return.secondary {
+    position: absolute;
+    left : 10px;
+    right: 10px;
+    width: 90%;
+    margin: 0 auto;
+    bottom: 10px;
+    display: block;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    padding: 0 8px;
+    margin-bottom: 10px;
+    line-height: 38px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background: var(--red)
+}
 button.enter {
     background: var(--blue);
     color: #fff;

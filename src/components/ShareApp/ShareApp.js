@@ -6,6 +6,8 @@ import styles from './ShareApp.module.css';
 
 const RateUs = (props) => {
 
+    console.log(props);
+
     // NB 👉: Fake phone no below
 
 	return (
@@ -29,6 +31,10 @@ const RateUs = (props) => {
                     </a>
                 </li>
             </ul>
+            <button className="return secondary"
+                onClick={props.showComponent}>
+                Return
+            </button>
         </section>
 	)
 }
