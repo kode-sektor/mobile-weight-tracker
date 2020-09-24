@@ -57,10 +57,10 @@
     .profile-img {
         position: absolute;
         display: block;
-        right: 100%;
+        right: 90%;
         opacity: 0;
         height: 100%;
-        animation: imgMove 25s 0s ease-in-out forwards;
+        animation: imgMove 20s 0s ease-in-out forwards;
     }
     .profile-img img {
         max-width: none;
@@ -80,8 +80,8 @@
     }
     @keyframes imgMove {
         0% {
-            opacity: 0
-            right: 100%;
+            opacity: 0;
+            right: 90%;
         }
         25% {
             opacity: 0;

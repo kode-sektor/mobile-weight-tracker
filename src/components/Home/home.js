@@ -60,7 +60,10 @@ class Layout extends Component {
 		
 		// Fake URLs
 		socials : {
-			whatsapp : encodeURI("https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en"),
+			whatsapp : {
+				text : encodeURI("Check this out:"),
+				url : encodeURI("https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en")
+			},
 			twitter : encodeURI("Check out my Weight Tracker app at: https://play.google.com/store/apps/details?id=com.minstermedia.android.weighttracker&hl=en"),
 		},
 

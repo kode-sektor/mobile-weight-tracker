@@ -6,7 +6,7 @@ import styles from './ShareApp.module.css';
 
 const RateUs = (props) => {
 
-    console.log(props);
+    // console.log(props);
 
     // NB 👉: Fake phone no below
 
@@ -21,7 +21,7 @@ const RateUs = (props) => {
                     </iframe>
                 </li>
                 <li className={styles.whatsapp}>
-                    <a href={`https://api.whatsapp.com/send?phone=234-XXXXXXXXXXtext=%20${props.socials.whatsapp}`}
+                    <a href={`https://api.whatsapp.com/send?phone=234-XXXXXXXXXXtext=${props.socials.whatsapp.text}%20${props.socials.whatsapp.url}`}
                         rel="external" target="_blank">Whatsapp
                     </a>
                 </li>
