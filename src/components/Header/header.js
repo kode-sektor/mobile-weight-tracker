@@ -15,7 +15,7 @@ const Header = (props) => {
 
             <section className="indicators">
                 <span className="time">
-                    3:42PM
+                    {props.time}
                 </span>
                 <div className="primary-indicators">
                     <span className="signal">

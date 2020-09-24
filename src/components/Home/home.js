@@ -29,6 +29,7 @@ class Layout extends Component {
 	state = {
 		initial : true,
 		showNav : false,
+		time : '3:42PM',
 		showPreferences : 'no_slide',
 		showHistory : 'no_slide',
 		showAddEntry : 'no_slide', 
@@ -73,6 +74,8 @@ class Layout extends Component {
 	}
 
 	componentWillMount() {
+
+		this.startTime();
 
 		firebaseTarget.once('value').then((snapshot) => {
 			let initial = (snapshot.val()).initial;
@@ -147,6 +150,28 @@ class Layout extends Component {
 		if(event.keyCode === 27) {
 		    this.showComponent();	// Escape to close all open components
 		}
+	}
+
+	startTime = () => {
+
+		let today = new Date();
+		let h = today.getHours();
+		let m = today.getMinutes();
+		let s = today.getSeconds();
+
+		m = this.checkTime(m);
+		s = this.checkTime(s);
+		
+		this.setState({
+			time : h + ":" + m + ":" + s
+		})
+
+		var t = setTimeout(this.startTime, 500);
+	}
+	
+	checkTime = (i) => {
+		if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+		return i;
 	}
 
 	// Why this is important: 
@@ -392,6 +417,7 @@ class Layout extends Component {
 
 					<Header
 						showNav={this.state.showNav}
+						time={this.state.time}
 						onHideNav={() => this.toggleSidenav(false)}
 						onOpenNav={() => this.toggleSidenav(true)}
 						showComponent={(evt) => this.toggleComponent(evt)}
