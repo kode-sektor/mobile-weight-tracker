@@ -44,6 +44,7 @@
     }
     .copyright span {
         font-weight: bolder;
+        animation: blink 2s 1s ease-in alternate infinite;
     }
     .profile {
         position: absolute;
@@ -55,10 +56,45 @@
     }
     .profile-img {
         position: absolute;
-        left: -160px;
+        display: block;
+        right: 100%;
+        opacity: 0;
+        height: 100%;
+        animation: imgMove 25s 0s ease-in-out forwards;
+    }
+    .profile-img img {
+        max-width: none;
+        height: 100%;
+        border: 2px solid #fff;
     }
 
     /*Animation*/
+
+    @keyframes blink {
+        from {
+            opacity: 0.3;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @keyframes imgMove {
+        0% {
+            opacity: 0
+            right: 100%;
+        }
+        25% {
+            opacity: 0;
+        }
+        30% {
+            opacity: .3
+        }
+        to {
+            right: 0%;
+            opacity: .7;
+        }
+    }
+
 }
 
 @media (min-width: 992px) {

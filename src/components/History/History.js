@@ -20,7 +20,7 @@ const HistoryList = (props) => {
             date = item.date;
             date = new Date(date);
             day = date.getDate();
-            month = date.getMonth();
+            month = date.getMonth() + 1;
             year = (date.getFullYear()).toString().substr(-2);
 
             formattedDate = day + '/' + month + '/' + year;
