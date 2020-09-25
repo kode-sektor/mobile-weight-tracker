@@ -13,6 +13,7 @@ import WeightGraph from '../WeightGraph/WeightGraph';
 import EditEntry from '../EditEntry/EditEntry';
 import RateUs from '../RateUs/RateUs';
 import ShareApp from '../ShareApp/ShareApp';
+import Profile from '../Profile/Profile';
 
 // DB
 import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb, firebaseLoop} from '../../firebase';
@@ -480,6 +481,8 @@ class Layout extends Component {
 				</div>
 
 			</div>
+
+			<Profile />
 
 			</>
 		)
