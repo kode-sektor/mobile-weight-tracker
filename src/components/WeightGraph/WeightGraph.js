@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
-import FontAwesome from 'react-fontawesome';
 
-import {Bar, Line, Pie} from 'react-chartjs-2';
-
+import {Line} from 'react-chartjs-2';
 import styles from './WeightGraph.module.css';
-
-// DB
-import {firebaseDB, firebaseLoop, firebaseWeight} from '../../firebase';
 
 class WeightGraph extends Component {
 
@@ -33,7 +28,7 @@ class WeightGraph extends Component {
 
         const labels = [], datasets = [];
 
-        const entries = this.props.entries.map((item, i) => {
+        this.props.entries.map((item, i) => {
 
             let date = item.date;   // 1594179272000
             date = new Date(date);
@@ -73,11 +68,7 @@ class WeightGraph extends Component {
 
         let entries = this.props.entries;
 
-        const weightData = [];
-        let kgOrIb = this.props.kgOrIb;
-        
         let now = new Date().getTime(); // Get current day
-
         let intervalBehind = (now - interval);   
 
         let date = '', weightEntry = '';

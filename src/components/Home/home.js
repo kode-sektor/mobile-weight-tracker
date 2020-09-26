@@ -58,6 +58,10 @@ class Layout extends Component {
 		},
 		kgOrIb : "kg",
 		entries : [],
+		images : {
+			author : '',
+			phoneBg : ''
+		},
 		
 		// Fake URLs
 		socials : {
@@ -170,7 +174,7 @@ class Layout extends Component {
 			time : h + ":" + m + ":" + s
 		})
 
-		var t = setTimeout(this.startTime, 500);
+		setTimeout(this.startTime, 500);
 	}
 	
 	checkTime = (i) => {
@@ -230,7 +234,7 @@ class Layout extends Component {
 
 		let element = '', action = '';
 
-		let edit = '', paginateID = '', recordID='';	// For handling 'edit' and 'del' actions
+		let paginateID = '', recordID='';	// For handling 'edit' and 'del' actions
 
 		// Check for class names of return. Class (and not ID) of "return" is used because
 		// there could be multiple return buttons in the application. Class "return" would 
@@ -303,7 +307,7 @@ class Layout extends Component {
 				// Fetch record for particular 
 				const fetchRecord = () => {
 
-					let val = '', unit = this.state.kgOrIb;
+					let val = '';
 
 					firebaseDB.ref('user/0/weight/-' + recordID).once('value').then((snapshot) => {
 						val = snapshot.val();
@@ -449,7 +453,6 @@ class Layout extends Component {
 
 					<AddEntry 
 						addEntry={this.state.showAddEntry}
-						entries={(this.state.entries).length}
 						showComponent={(evt) => this.toggleComponent(evt)}
 						showHome={() => this.toggleComponent('home')}
 						setInitial={()=>this.setInitial()}

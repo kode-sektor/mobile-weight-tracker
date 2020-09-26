@@ -22,11 +22,11 @@ const RateUs = (props) => {
                 </li>
                 <li className={styles.whatsapp}>
                     <a href={`https://api.whatsapp.com/send?phone=234-XXXXXXXXXXtext=${props.socials.whatsapp.text}%20${props.socials.whatsapp.url}`}
-                        rel="external" target="_blank">Whatsapp
+                        rel="external noopener noreferrer" target="_blank">Whatsapp
                     </a>
                 </li>
                 <li className={styles.twitter}>
-                    <a class="twitter-share-button" data-size="large" rel="external" target="_blank" href={`https://twitter.com/intent/tweet?text=${props.socials.twitter}`}>
+                    <a class="twitter-share-button" data-size="large" rel="external noopener noreferrer" target="_blank" href={`https://twitter.com/intent/tweet?text=${props.socials.twitter}`}>
                         Tweet
                     </a>
                 </li>

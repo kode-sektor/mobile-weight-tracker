@@ -10,7 +10,7 @@ import styles from '../AddEntry/AddEntry.module.css';
 import {ibToKg} from '../../config';    // Kg-to-Ib factor
 
 // DB
-import {firebaseDB, firebaseTarget, firebaseWeight, firebaseKgOrIb} from '../../firebase';
+import {firebaseDB, firebaseTarget} from '../../firebase';
 
 class AddEntry extends React.Component {
 
@@ -49,7 +49,6 @@ class AddEntry extends React.Component {
         
         let weightKG = (this.state.weight.kg|| this.props.editEntry.record.weight.kg);
         let weightIB = (this.state.weight.ib || this.props.editEntry.record.weight.ib);
-        let date = (this.state.startDate || this.props.editEntry.record.date);
 
         // Upload to firebase 
         const upload = () => {          
