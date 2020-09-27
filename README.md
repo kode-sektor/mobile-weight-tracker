@@ -1,3 +1,5 @@
+Deployment 👉 https://mobile-weight-tracker-e6e6b.web.app/
+
 # Mobile-Weight-Tracker
 
 This is an application to enable users track their weight over time. This application will act as the transformation of an existing UI/UX-centric XD prototype. And since the application is small-scale, only rendering for mobile view will be considered. 
