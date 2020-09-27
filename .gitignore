@@ -20,6 +20,10 @@
 .env.production
 .env.staging
 .env
+.firebase/
+.firebaserc
+firebase-debug.log
+firebase.json
 
 
 npm-debug.log*
