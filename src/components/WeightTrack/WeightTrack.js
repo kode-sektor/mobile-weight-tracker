@@ -31,7 +31,7 @@ class WeightTrack extends Component {
                             let currentWeight = data[0].weight[`${kgOrIb}`];    // Fetch most recent weight
         
                             this.setState({
-                                target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (180)
+                                target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (70)
                                 entries : data,
                                 weight : Number(currentWeight)
                             });
@@ -40,7 +40,7 @@ class WeightTrack extends Component {
                 } else {
                     this.setState({
                         kgOrIb, // 'kg' or 'ib'
-                        target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (180)
+                        target : Number(targetSnapshot.val().weight[`${kgOrIb}`]),   // Target (70)
                     });
                 }
             })

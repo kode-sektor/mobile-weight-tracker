@@ -69,6 +69,8 @@ const HistoryList = (props) => {
         return entryHTML;
     }
 
+    console.log(props.paginate)
+
 	return (
 
         <section className={`${styles.historyList} ${props.history} module out`}>

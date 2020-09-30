@@ -83,7 +83,7 @@ class Layout extends Component {
 
 	componentWillMount() {
 
-		this.startTime();
+		// this.startTime();
 
 		firebaseTarget.once('value').then((snapshot) => {
 			let initial = (snapshot.val()).initial;
@@ -96,6 +96,7 @@ class Layout extends Component {
 				if (!initial) {
 					firebaseTarget.once('value').then((snapshot) => {
 						let target = snapshot.val();
+						let perPage = this.state.paginate.perPage;
 
 						let data = [];
 						firebaseWeight.once('value').then((snapshot) => {
@@ -119,14 +120,14 @@ class Layout extends Component {
 								}
 								// The - 1 at the end accounts for the fact that factor begins from 0 but 
 								// the length of an array is not 0-based
-								if (factor === Math.floor((this.state.entries).length / perPage ) - 1) {	// Disable Next on last possible fetch record
+								if (factor === Math.floor(((data).length - 1) / perPage )) {	// Disable Next on last possible fetch record
 									stateNext = true
-								}
+								} 
 							}
 
 							if (data.length) {
 								this.setState({
-									initial,
+									initial,	
 									target,
 									kgOrIb,
 									entries : data,
@@ -352,13 +353,13 @@ class Layout extends Component {
 					(id === "next") ? factor++ : factor--;	// Increment / decrement pagination factor
 					
 					// Check to disable button
-					if (factor === 0) {	// Disable Prev on first load
-						statePrev = true
-					}
-					// The - 1 at the end accounts for the fact that factor begins from 0 but 
-					// the length of an array is not 0-based
-					if (factor === Math.floor((this.state.entries).length / perPage ) - 1) {	// Disable Next on last possible fetch record
+					statePrev = (factor === 0) ? true : false;	// Disable Prev on first load
+					
+					// The - 1 at the end accounts for the fact that factor begins from 0 not 1.
+					if (factor === Math.floor((((this.state.entries).length) - 1 ) / perPage )) {	// Disable Next on last possible fetch record
 						stateNext = true
+					} else {
+						stateNext = false;
 					}
 
 					// Reslice the array
@@ -411,7 +412,7 @@ class Layout extends Component {
 
 	render () {
 
-		console.log(this.state);
+		// console.log(this.state);
 
 		return (
 

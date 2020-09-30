@@ -19,8 +19,8 @@ class AddEntry extends React.Component {
         processForm : false,
         kgOrIb: "kg",   // kg/ib Would be toggled by the select dropdown in form
         weight : {
-            "kg" : 180,
-            "ib" : 396.8
+            "kg" : 70,
+            "ib" : 154.32
         },
         startDate: (new Date()).getTime()
     };
@@ -139,7 +139,7 @@ class AddEntry extends React.Component {
 
                         <div className="form-group">
                             <input type="number" className="target-entry" id="weight" autoComplete="off" placeholder="Target" max="1000" min="1" name="weight" autoFocus    
-                                defaultValue={this.state.kgOrIb === 'kg' ? 180 : 396.8}
+                                defaultValue={this.state.kgOrIb === 'kg' ? 70 : 154.32}
                                 onChange={({ target: { value } }) => { 
                                     if (this.state.kgOrIb === 'kg') {
                                         this.setState({weight : {

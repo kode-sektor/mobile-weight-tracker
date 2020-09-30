@@ -4,8 +4,8 @@
     		"target" : [{
 				"initial" : true,
 				"weight" : {
-					"kg" : 180,
-					"ib" : 396.8
+					"kg" : 70,
+					"ib" : 154.32
 				}
     		}],
     		"weight" : [{
