@@ -69,7 +69,7 @@ const HistoryList = (props) => {
         return entryHTML;
     }
 
-    console.log(props.paginate)
+    // console.log(props.paginate)
 
 	return (
 

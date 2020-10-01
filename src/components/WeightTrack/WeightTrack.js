@@ -74,7 +74,9 @@ class WeightTrack extends Component {
                 let entries = this.state.entries;
 
                 if (entries.length > 0) {
-                    
+
+                    console.log(entries);
+
                     const weightData = [];
                     let kgOrIb = this.state.kgOrIb;
 
@@ -82,22 +84,25 @@ class WeightTrack extends Component {
                     let month = new Date().getMonth();
 
                     for (let i=0; i < entries.length; i++) {
-                        if (new Date(entries[i].date).getMonth() === month) {  // Filter only for current month
-                            // alert (new Date(item.date).getMonth());
+                        if ((new Date(entries[i].date).getMonth() + 1) === month) {  // Filter only for current month
                             weightData.push(Number(entries[i].weight[`${kgOrIb}`]));
                         }
                     }
                     
-                    let maxWeight = (Math.max(...weightData));
-                    let minWeight = (Math.min(...weightData));
+                    let deltaChange = '', result = 0;
 
-                    let result =  (maxWeight - minWeight).toFixed(1);
-
-                    let maxWeightOrder = (weightData.indexOf(maxWeight));
-                    let minWeightOrder = (weightData.indexOf(minWeight));
-
-                    // If maximum weight is the most recent, insert caret-up change
-                    let deltaChange = (maxWeightOrder < minWeightOrder) ? <FontAwesome name="caret-up" /> : <FontAwesome name="caret-down" /> ;
+                    if (weightData.length > 0) {
+                        let maxWeight = (Math.max(...weightData));
+                        let minWeight = (Math.min(...weightData));
+    
+                        result =  (maxWeight - minWeight).toFixed(1);
+    
+                        let maxWeightOrder = (weightData.indexOf(maxWeight));
+                        let minWeightOrder = (weightData.indexOf(minWeight));
+    
+                        // If maximum weight is the most recent, insert caret-up change
+                        deltaChange = (maxWeightOrder < minWeightOrder) ? <FontAwesome name="caret-up" /> : <FontAwesome name="caret-down" /> ;
+                    }
 
                     return(
                         <>

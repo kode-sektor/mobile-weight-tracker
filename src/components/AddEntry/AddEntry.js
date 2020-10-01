@@ -73,7 +73,11 @@ class AddEntry extends React.Component {
                 });
             } else {
                 const entry = { // Upload new weight entry
-                    'date' : this.state.startDate,
+
+                    // this current date format when converted to month format later on elsewhere 
+                    // in the code starts from 0, not 1. Thus account for 1 anywhere else in the 
+                    // code while retrieving and using month
+                    'date' : this.state.startDate,  
                     'weight' : {
                         kg : Number(this.state.weight.kg),
                         ib : Number(this.state.weight.ib)
