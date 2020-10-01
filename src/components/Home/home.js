@@ -83,7 +83,7 @@ class Layout extends Component {
 
 	componentWillMount() {
 
-		// this.startTime();
+		this.startTime();
 
 		firebaseTarget.once('value').then((snapshot) => {
 			let initial = (snapshot.val()).initial;
